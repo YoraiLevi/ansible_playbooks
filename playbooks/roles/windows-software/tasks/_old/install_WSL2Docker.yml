@@ -1,0 +1,12 @@
+- name: Install WSL v2
+  win_chocolatey:
+    state: present
+    name: wsl2
+    install_args: /Version:2 /Retry:true
+  register: WSL2_INSTALLED
+- ansible.windows.win_reboot:
+  when: WSL2_INSTALLED.changed and WSL2_INSTALLED.rc == 3010
+- name: install wsl2 repositories and utils
+  win_chocolatey:
+    state: present
+    name: "{{docker_wsl_packages}}"

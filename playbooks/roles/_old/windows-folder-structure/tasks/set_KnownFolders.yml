@@ -1,0 +1,30 @@
+- block:
+  - name: create temp dir
+    ansible.windows.win_tempfile:
+      state: directory
+      suffix: "KnownFolderPathPS"
+    register: tmp
+    changed_when: false
+  - name: copy powershell script
+    ansible.windows.win_copy:
+      src: "{{item}}"
+      dest: "{{tmp.path}}/"
+    loop: "{{ scripts }}"
+    changed_when: false
+  - name: powershell move dir to target
+    win_command: powershell.exe -file "{{tmp.path}}/{{KnownFolderPathPS}}" -KnownFolder "{{item.KnownFolder}}" -Target "{{item.target}}"
+    loop: "{{folders}}"
+    register: res
+    failed_when: '"Paths mismatch:"  in res.stderr or "Failed to change directory" in res.stderr'
+    changed_when:
+      - res.rc == 0
+  - name: restart explorer.exe
+    win_command: cmd.exe /c "taskkill /im explorer.exe /f && start explorer.exe"
+    changed_when: false
+
+  vars:
+    KnownFolderPathPS: Set-KnownFolderPath.ps1
+    scripts:
+      - "{{KnownFolderPathPS}}"
+      - KnownFolderPath.ps1
+    

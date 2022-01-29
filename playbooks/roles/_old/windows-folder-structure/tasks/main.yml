@@ -1,0 +1,30 @@
+- name: create directories
+  ansible.windows.win_file:
+    path: "{{ item.target }}"
+    state: directory
+  loop: "{{folders_structure | selectattr('target', 'defined') | selectattr('file', 'undefined') | list }}"
+
+- name: set KnownFolders
+  block:
+    - name: set KnownFolders - first pass
+      include_tasks: set_KnownFolders.yml
+      vars:
+        folders: "{{folders_structure | selectattr('KnownFolder', 'defined') | selectattr('target', 'defined') | list }}"
+    - name: replace old KnownFolders with symlinks
+      # this is required for this setup because some programs save to user folders directly.
+      include_tasks: repalce_Softlink.yml
+      vars:
+        folders: "{{folders_structure | selectattr('KnownFolder', 'defined') | selectattr('target', 'defined') | selectattr('path', 'defined') | list }}"
+    - name: set KnownFolders - 2nd pass
+      include_tasks: set_KnownFolders.yml
+      vars:
+        folders: "{{folders_structure | selectattr('KnownFolder', 'defined') | selectattr('target', 'defined') | selectattr('path', 'defined') | list }}"
+- name: setup symlinks
+  include_tasks: repalce_Softlink.yml
+  vars:
+    folders: "{{folders_structure | selectattr('target', 'defined') | selectattr('path', 'defined') | list }}"
+- name: set directories' icons
+  include_tasks: create_Favicon.yml
+  loop_control:
+    loop_var: folder
+  loop: "{{folders_structure | selectattr('desktopini', 'defined') | list }}"

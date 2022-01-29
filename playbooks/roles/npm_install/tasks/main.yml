@@ -1,0 +1,58 @@
+---
+# tasks file for npm_install
+- name: npm install -g {{npm_args}}
+  block: # Global Variable Container
+    - block:
+        - name: Checking if nvm is installed...
+          win_command: "nvm root"
+          changed_when: false
+          register: nvm_root
+      rescue:
+        - name: Missing nvm, Installing...
+          win_chocolatey:
+            name: nvm
+        - win_command: "nvm root"
+          changed_when: false
+          register: nvm_root
+      always:
+        - ansible.windows.win_powershell:
+            script: |
+              {{nvm_utils_ps1}}
+              $Ansible.Result = Get-InstalledLTS
+          register: pwsh_output
+          changed_when: false
+          when: nvm_nodejs_version is not defined or nvm_nodejs_version == 'lts'
+        - name: Installing Nodejs {{nvm_nodejs_version_1}}
+          win_command: "nvm install {{nvm_nodejs_version_1}}"
+          changed_when: nvm.stdout is not regex('Version ((?:\d+\.*){1,2}\d+) is already installed.')
+          register: nvm
+          # NVM accepts XX or X.X.X or lts or latest
+          #if no version is specified gets the latest installed LTS: map lts to currently installed lts
+          #if latest is specified install latest(nvm install lts) lts: map latest to lts
+          #if newest is specified install newset(nvm install latest) nodejs version: map newest to latest
+          vars:
+            nvm_nodejs_version_1: '{{ "latest" if(nvm_nodejs_version=="newest") else "lts" if(nvm_nodejs_version=="latest") else pwsh_output.result|default("lts",true) if(not nvm_nodejs_version or nvm_nodejs_version == "lts") else nvm_nodejs_version }}'
+        - block:
+            - win_command: "{{npm_exec}} list"
+              register: npm_list_1
+              changed_when: false
+            - name: Executing... npm install -g {{npm_args}}
+              win_command: "{{npm_exec}} install -g {{npm_args}}"
+              register: npm
+              changed_when: false
+            - win_command: "{{npm_exec}} list"
+              register: npm_list_2
+              changed_when: >
+                not (
+                npm_list_1.stdout == npm_list_2.stdout
+                and
+                npm_list_1.stderr == npm_list_2.stderr
+                )
+          vars:
+            npm_exec: "{{node_path}}\\npm.cmd -g"
+            nvm_nodejs_version_1: '{{nvm.stdout | regex_findall("((?:\d+\.*){1,2}\d+)")|first}}'
+            nvm_root_1: '{{nvm_root.stdout | regex_findall("Current Root:\s+(.*)","\\1")|first}}'
+            node_path: "{{nvm_root_1}}\\v{{nvm_nodejs_version_1}}"
+  vars:
+    nvm_nodejs_version: '{{nodejs_version|default("lts",true)}}'
+    nvm_utils_ps1: "{{ lookup('file', 'nvm-utils.ps1') }}"

@@ -1,0 +1,8 @@
+- name: echo
+  debug:
+    msg: Worked.
+- name: X11 on windows.
+  ansible.builtin.lineinfile:
+    path: ~/.bashrc
+    regexp: "^export DISPLAY="
+    line: export DISPLAY=$(route -n | grep -m1 '^0.0.0.0' | awk '{ print $2; }'):0.0

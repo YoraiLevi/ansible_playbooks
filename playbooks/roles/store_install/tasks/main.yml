@@ -1,0 +1,23 @@
+---
+# tasks file for store_install
+- name: Add-AppxPackage -DeferRegistrationWhenPackagesAreInUse
+  block:
+    - win_tempfile:
+        state: directory
+        suffix: ansible_store_install
+      register: tmp
+      changed_when: false
+      when: path | default(true,true)
+    - name: Installing {{uri}}
+      ansible.windows.win_powershell:
+        script: |
+          $ErrorActionPreference = "Stop"
+          {{download_AppxPackage_ps1}} 
+          Install-AppxPackageFromStoreUrl -Uri {{uri}} -TempDir {{download_path}} | Write-Host
+      vars:
+        download_path: "{{path|default(tmp.path,true)}}"
+      register: pwsh_output
+      changed_when: '"Install" in (pwsh_output.host_out|default("",true))'
+  vars:
+    download_AppxPackage_ps1: "{{ lookup('file', 'Download-AppxPackage.ps1') }}"
+# Start-Process "ms-appinstaller:?source=https://aka.ms/getwinget"

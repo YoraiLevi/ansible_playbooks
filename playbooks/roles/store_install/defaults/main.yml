@@ -1,0 +1,4 @@
+---
+# defaults file for store_install
+uri: "https://www.microsoft.com/"
+path: "(New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path"

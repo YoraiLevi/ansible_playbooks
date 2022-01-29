@@ -1,0 +1,41 @@
+- block:
+  - name: create temp dir
+    ansible.windows.win_tempfile:
+      state: directory
+      suffix: "NewSoftLink"
+    register: tmp
+    changed_when: false
+  - name: copy powershell script
+    ansible.windows.win_copy:
+      src: "{{item}}"
+      dest: "{{tmp.path}}/"
+    loop: "{{ scripts }}"
+    changed_when: false
+
+  - name: replace with soft Link
+    # win_command: exit 1
+    include_tasks: _repalce_softlink.yml
+    loop_control:
+      loop_var: folder
+    loop: "{{folders}}"
+    # vars:
+      # tmp: "{{tmp}}"
+      # NewSoftLink: "{{NewSoftLink}}"
+
+  # - name: check if process exists
+  #   when: my_variable is defineds
+
+  # - name: powershell move dir to target
+  #   win_command: powershell.exe -file "{{tmp.path}}/{{NewSoftLink}}" -Path "{{item.Path}}" -Target "{{item.target}}"
+  #   loop: "{{folders}}"
+  #   register: res
+  #   # failed_when: '"Paths mismatch:"  in res.stderr or "Failed to change directory" in res.stderr'
+  #   changed_when:
+  #     - res.rc == 0
+  #     - 'Changed: Created Symbolic Link successfully' in res.stdout
+
+  vars:
+    NewSoftLink: Replace-SoftLink.ps1
+    scripts:
+      - "{{NewSoftLink}}"
+    

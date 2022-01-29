@@ -1,0 +1,92 @@
+folders:
+  # linux dirs
+  - target: D:/bin
+  # - target: boot
+  # - target: dev
+  - target: D:/etc
+  # - target: home
+  # - target: init
+  # - target: lib
+  # - target: lib32
+  # - target: lib64
+  # - target: libx32
+  # - target: lost+found
+  # - target: media
+  # - target: mnt
+  - target: D:/opt
+  # - target: proc
+  # - target: root
+  # - target: run
+  # - target: sbin
+  # - target: snap
+  # - target: srv
+  # - target: sys
+  # - target: tmp
+  - target: D:/usr
+  - target: D:/var
+  #windows user folders
+  - KnownFolder: "3DObjects"
+    target: "D:/3D Objects"
+  - KnownFolder: "Desktop"
+    target: "D:/Desktop"
+  - KnownFolder: "Documents"
+    target: "D:/Documents"
+  - KnownFolder: "Downloads"
+    target: "D:/Downloads"
+  - KnownFolder: "Favorites"
+    target: "D:/Favorites"
+  - KnownFolder: "Links"
+    target: "D:/Links"
+  - KnownFolder: "Music"
+    target: "D:/Music"
+  - KnownFolder: "Pictures"
+    target: "D:/Pictures"
+  - KnownFolder: "Videos"
+    target: "D:/Videos"
+    #etc files
+  - path: "$ENV:USERPROFILE/.vscode"
+    target: "D:/etc/.vscode"
+    processes:
+      - code
+  - path: "$ENV:USERPROFILE/.gitconfig"
+    target: "D:/etc/.gitconfig"
+    processes:
+      - git
+    file: yes
+  - path: >-
+      $ENV:USERPROFILE/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
+    target: "D:/etc/windows-terminal/settings.json"
+    processes:
+      - WindowsTerminal
+    file: yes
+    #etc folders
+  - path: "$ENV:USERPROFILE/AppData/Local/Microsoft/Edge/User Data"
+    target: "D:/etc/microsoft/edge/User Data"
+    processes:
+      - msedge
+  #create icons
+  - target: "D:/etc/microsoft/edge"
+    desktopini:
+      IconResource: 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe,0'
+  - target: "D:/Games"
+    desktopini:
+      IconResource: 'C:\Windows\system32\setupapi.dll,36'
+  - target: "D:/source"
+    desktopini:
+      IconResource: 'C:\Program Files\Git\mingw64\share\git\git-for-windows.ico,0'
+  - target: D:/source/thirdparty
+  - target: D:/source/inDev
+  - target: D:/source/trashDev
+  - target: "D:/VirtualMachines"
+    desktopini:
+      IconResource: 'C:\Windows\System32\setupapi.dll,47'
+  - target: D:/VirtualMachines/Virtual Hard Disks
+  # This creates a bug when restoring checkpoints in hyper v
+  # - path: "C:/Users/Public/Documents/Hyper-V/Virtual Hard Disks"
+  #   target: "D:/VirtualMachines/Hyper-V/Virtual Hard Disks"
+  # - path: "C:/ProgramData/Microsoft/Windows/Hyper-V"
+  #   target: "D:/VirtualMachines/Hyper-V"
+  - target: "D:/bin"
+    desktopini:
+      IconResource: 'C:\Windows\System32\wmploc.DLL,17'
+  - target: D:/GoogleDrive

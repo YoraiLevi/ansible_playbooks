@@ -1,0 +1,24 @@
+#this can actually fuckup existing desktop.inis
+- win_command: "attrib -s -h {{folder.target}}/desktop.ini"
+  changed_when: false
+- community.windows.win_lineinfile:
+    path: "{{ folder.target }}/desktop.ini"
+    line: "[.ShellClassInfo]"
+    insertbefore: BOF
+    create: true
+    # backup: true
+- community.windows.win_lineinfile:
+    path: "{{ folder.target }}/desktop.ini"
+    line: "{{ item.key }}={{ item.value }}"
+    regex: "^{{ item.key }}"
+  loop: "{{ folder.desktopini|dict2items }}"
+- win_command: "attrib +s +h {{folder.target}}/desktop.ini"
+  register: ret
+  changed_when: false
+  failed_when:
+    - '"not found" in ret.stdout'
+- win_command: "attrib +r {{folder.target}}"
+  register: ret
+  changed_when: false
+  failed_when:
+    - '"not found" in ret.stdout'

@@ -1,0 +1,31 @@
+---
+# tasks file for win_reg_file
+- block:
+    - name: "Updating Registry Keys..."
+      ansible.windows.win_regedit:
+        path: "{{key.path|
+          replace('HKEY_CLASSES_ROOT','HKCR:',1)|
+          replace('HKEY_CURRENT_USER','HKCU:',1)|
+          replace('HKEY_LOCAL_MACHINE','HKLM:',1)|
+          replace('HKEY_USERS','HKU:',1)|
+          replace('HKEY_CURRENT_CONFIG','HKCC:',1)|
+          mandatory}}"
+        name: "{{key.name|default(omit,true)}}"
+        data: '{{("0x" if "word" in key.type else "")+key.data|default(omit,true)}}'
+        type: "{{key.type|default(omit,true)}}"
+        state: "{{'absent' if '-' in key.delete else ''|default(omit,true)}}"
+      loop: "{{keys}}"
+      loop_control:
+        loop_var: key
+  vars:
+    pattern: '(?:\[(-?)(.*)\])|(?:\"(.*)\"=(?:(-)|\"(.*)\"))|(?:\"(.*)\"=(.*):(.*))'
+    keys: "[{% set vars = {'path':None} %}
+      {% set reg_file = file_contents.encode('utf-8','ignore') | default('',true) | regex_replace('[\\r\\n]+','\n')%}
+      {% set a = reg_file| regex_findall(pattern)|to_json|from_json|json_query('[*].{delete:[0] || [3],path:[1],name:[5] || [2], type:[6],data: [4] || [7]}')%}
+      {% for item in a%}
+      {%if vars.update({'path': item['path'] or vars['path']} ) %}{% endif %}
+      {%if item.update({'path': vars['path'],'data': item['data'] | unescape} ) %}{% endif %}
+      {{item}},
+      {% endfor %}]"
+# {% set reg_file = lookup('file', file) | regex_replace('[\\r\\n]+','\n')%}
+# (?:\[(-?)(.*)\])|(?:\"(.*)\"=\"(.*)\")|(?:\"(.*)\"=(.*):(.*))

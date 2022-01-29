@@ -1,0 +1,4 @@
+---
+# defaults file for pip_install
+pip_args: "pip --upgrade"
+python_version: "3"

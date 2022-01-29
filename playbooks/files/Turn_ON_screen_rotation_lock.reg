@@ -1,0 +1,11 @@
+﻿Windows Registry Editor Version 5.00
+
+; Created by: Shawn Brink
+; Created on: November 7, 2021
+; Tutorial: https://www.elevenforum.com/t/turn-on-or-off-screen-rotation-lock-in-windows-11.2603/
+
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AutoRotation]
+"Enable"=dword:00000000
+
+

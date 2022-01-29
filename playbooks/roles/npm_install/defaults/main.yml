@@ -1,0 +1,4 @@
+---
+# defaults file for npm_install
+npm_args: "npm@latest"
+nodejs_version: "lts"

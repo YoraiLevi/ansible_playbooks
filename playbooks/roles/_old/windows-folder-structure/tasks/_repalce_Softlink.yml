@@ -1,0 +1,19 @@
+- block:
+  - block:
+    - name: check if process exists
+      win_command: powershell.exe -command "Get-Process {{item}}"
+      loop: "{{folder.processes}}" #"{{query(folder.processes)}}"
+      when: folder.processes is defined
+      register: res
+      failed_when: 'res.rc == 0'
+      changed_when: false
+    - name: powershell move dir to target
+      win_command: powershell.exe -command "{{tmp.path}}/{{NewSoftLink}} -Path \"{{folder.path}}\" -Target \"{{folder.target}}\""
+      # loop: "{{folders}}"
+      register: result
+      # failed_when: '"Paths mismatch:"  in res.stderr or "Failed to change directory" in res.stderr'
+      changed_when:
+        - result.rc == 0
+        - '"Changed: Created Symbolic Link successfully" in result.stdout'
+  ignore_errors: yes
+

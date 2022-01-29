@@ -1,0 +1,234 @@
+---
+# https://docs.ansible.com/ansible/latest/collections/chocolatey/chocolatey/win_chocolatey_module.html
+windows_software:
+  docker_wsl_packages:
+    # # #install: yes
+    choco_packages:
+      # - wsl-ubuntu-2004
+      - name: docker-desktop
+      - name: wsl2
+      # - lxrunoffline
+  general_dev_tools:
+    # install: yes
+    choco_packages:
+      - name: gsudo
+      - name: git
+      - name: poshgit
+      - name: vscode
+      - name: powershell-core
+  misc_laptop:
+    # install: yes
+    choco_packages:
+      - name: BatteryBar
+  misc:
+    # install: yes
+    choco_packages:
+      # - name: ccleaner
+      # - name: files
+      - name: 7zip
+      - name: autohotkey
+      - name: Everything
+      - name: vlc
+      - name: Recuva
+      - name: windirstat
+      - name: discord
+      - name: zoom
+      - name: jdownloader
+      - name: qbittorrent
+      - name: bitwarden
+      - name: google-drive-file-stream
+      - name: office365business
+        package_params: '/exclude:"Access Groove Lync OneDrive OneNote Outlook Publisher" /eula:"true"'
+  misc_misc:
+    # install: yes
+    choco_packages:
+      - name: audacity
+      - name: audacity-ffmpeg
+  game_dev:
+    #install: yes
+    choco_packages:
+      - name: blender
+      - name: unity
+  java:
+    - name: jre8
+    - name: jdk8
+  rust:
+    #install: yes
+    choco_packages:
+      - name: cmake
+      - name: cygwin
+      - name: make
+      - name: rust
+      - name: bazel
+  go:
+    choco_packages:
+      - name: golang
+  python:
+    #install: yes
+    python_packages:
+      - name: pip --upgrade
+      - name: tox
+  nodejs:
+    # install: yes
+    node_modules:
+      - name: npm
+      - name: typescript
+      - name: ts-node
+      - name: eslint
+      - name: prettier
+    choco_packages:
+      - name: curl
+      - name: wget
+  store:
+    # install: yes
+    windows_store:
+      - uri: "https://www.microsoft.com/en-us/p/dynamic-theme/9nblggh1zbkw"
+      # - uri: "https://www.microsoft.com/en-us/p/roundedtb/9mtftxsj9m7f"
+  bloatware:
+    # install: yes
+    uninstall_appx:
+      - name: "Microsoft.BingNews"
+      - name: "Disney.37853FC22B2CE"
+  apply_reg:
+    install: yes
+    reg_edits:
+      - name: Restore the classic context menus in Windows 11.reg
+      - name: eva.reg
+      - name: admin_uac_password.reg
+      - name: Use_Dark_theme_color_for_default_app_mode_for_current_user.reg
+      - name: Use_Dark_theme_color_for_default_Windows_mode_for_current_user.reg
+      - name: explorer.reg
+      - name: automaticAccentColor.reg
+      - name: 115ScaleFactor.reg
+      - name: Remove_Widgets_button_on_taskbar_in_Windows_11.reg
+      - name: Turn_ON_Clipboard_History_for_current_user.reg
+      - name: Show open windows only.reg
+      - name: Add_Pin_to_Quick_access_to_context_menu.reg
+      - name: Disable_Chat_icon_on_taskbar_for_all_users.reg
+      - name: Enable Last Active Click.reg
+      - name: Remove_Widgets_button_on_taskbar_in_Windows_11.reg
+      - name: Start_Layout_show_more_recommendations.reg
+      - name: Turn_ON_Restart_apps_after_sign_in_for_current_user.reg
+      - name: Turn_ON_screen_rotation_lock.reg
+  set_hibernate:
+    # install: yes
+    win_hibernate:
+      - size: 100
+  startup_programs:
+    # install: yes
+    win_copy:
+      - src: "TTS/"
+        dest: "%userprofile%/bin/TTS"
+    win_startup:
+      - src: "%userprofile%/bin/TTS/TTS.ahk"
+  folders:
+    win_knownfolders:
+    win_desktopini:
+    win_symlink:
+      # https://windowsloop.com/enable-developer-mode-windows-10/
+    # https://github.com/evilC/AutoHotInterception
+    # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | %{ Remove-PartitionAccessPath -DiskNumber $_.DiskNumber -PartitionNumber $_.PartitionNumber -AccessPath "$($_.DriveLetter):"}
+    # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | Add-PartitionAccessPath -AccessPath C:\FileHistory\
+    # netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes
+  # https://superuser.com/questions/1044050/configuring-windows-8-8-1-10-file-history-via-command-line
+  # http://blog.bitcollectors.com/adam/2017/07/file-history-command-line-tool/
+  #   # set region of windows
+  #   - script: PowerShell Get-WinHomeLocation; PowerShell Set-WinHomeLocation -GeoID 117
+  # https://engineering.thetrainline.com/scripting-language-and-region-settings-for-current-user-default-user-and-welcome-screen-859bbd58900d
+# set login keyboard
+# https://social.technet.microsoft.com/Forums/windows/en-US/6a21b20a-4d04-460a-b672-968de78c6646/command-line-tools-to-completely-change-regioninput-language-for-default-user-and-welcome-screen?forum=winservergen
+
+# set login image
+# https://c-nergy.be/blog/?p=15168
+# https://www.joseespitia.com/2017/09/15/set-wallpaper-powershell-function/
+# https://www.osource.se/index.php/custom-lockscreen-image-in-windows-10-with-powershell/
+#https://www.powershellgallery.com/packages/Set-LockScreen/1.0/Content/Set-LockScreen.ps1
+#     #Unnecessary Windows 10 AppX Apps
+#     "Microsoft.3DBuilder"
+#     "Microsoft.Microsoft3DViewer"
+#     "Microsoft.AppConnector"
+#     "Microsoft.BingFinance"
+#     "Microsoft.BingNews"
+#     "Microsoft.BingSports"
+#     "Microsoft.BingTranslator"
+#     "Microsoft.BingWeather"
+#     "Microsoft.BingFoodAndDrink"
+#     "Microsoft.BingHealthAndFitness"
+#     "Microsoft.BingTravel"
+#     "Microsoft.MinecraftUWP"
+#     "Microsoft.GamingServices"
+#     # "Microsoft.WindowsReadingList"
+#     "Microsoft.GetHelp"
+#     "Microsoft.Getstarted"
+#     "Microsoft.Messaging"
+#     "Microsoft.Microsoft3DViewer"
+#     "Microsoft.MicrosoftSolitaireCollection"
+#     "Microsoft.NetworkSpeedTest"
+#     "Microsoft.News"
+#     "Microsoft.Office.Lens"
+#     "Microsoft.Office.Sway"
+#     "Microsoft.Office.OneNote"
+#     "Microsoft.OneConnect"
+#     "Microsoft.People"
+#     "Microsoft.Print3D"
+#     "Microsoft.SkypeApp"
+#     "Microsoft.Wallet"
+#     "Microsoft.Whiteboard"
+#     "Microsoft.WindowsAlarms"
+#     "microsoft.windowscommunicationsapps"
+#     "Microsoft.WindowsFeedbackHub"
+#     "Microsoft.WindowsMaps"
+#     "Microsoft.WindowsPhone"
+#     "Microsoft.WindowsSoundRecorder"
+#     "Microsoft.XboxApp"
+#     "Microsoft.ConnectivityStore"
+#     "Microsoft.CommsPhone"
+#     "Microsoft.ScreenSketch"
+#     "Microsoft.Xbox.TCUI"
+#     "Microsoft.XboxGameOverlay"
+#     "Microsoft.XboxGameCallableUI"
+#     "Microsoft.XboxSpeechToTextOverlay"
+#     "Microsoft.MixedReality.Portal"
+#     "Microsoft.XboxIdentityProvider"
+#     "Microsoft.ZuneMusic"
+#     "Microsoft.ZuneVideo"
+#     "Microsoft.YourPhone"
+#     "Microsoft.Getstarted"
+#     "Microsoft.MicrosoftOfficeHub"
+
+#     #Sponsored Windows 10 AppX Apps
+#     #Add sponsored/featured apps to remove in the "*AppName*" format
+#     "*EclipseManager*"
+#     "*ActiproSoftwareLLC*"
+#     "*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
+#     "*Duolingo-LearnLanguagesforFree*"
+#     "*PandoraMediaInc*"
+#     "*CandyCrush*"
+#     "*BubbleWitch3Saga*"
+#     "*Wunderlist*"
+#     "*Flipboard*"
+#     "*Twitter*"
+#     "*Facebook*"
+#     "*Royal Revolt*"
+#     "*Sway*"
+#     "*Speed Test*"
+#     "*Dolby*"
+#     "*Viber*"
+#     "*ACGMediaPlayer*"
+#     "*Netflix*"
+#     "*OneCalendar*"
+#     "*LinkedInforWindows*"
+#     "*HiddenCityMysteryofShadows*"
+#     "*Hulu*"
+#     "*HiddenCity*"
+#     "*AdobePhotoshopExpress*"
+#     "*HotspotShieldFreeVPN*"
+
+#     #Optional: Typically not removed but you can if you need to for some reason
+#     "*Microsoft.Advertising.Xaml*"
+#     #"*Microsoft.MSPaint*"
+#     #"*Microsoft.MicrosoftStickyNotes*"
+#     #"*Microsoft.Windows.Photos*"
+#     #"*Microsoft.WindowsCalculator*"
+#     #"*Microsoft.WindowsStore*"
+# )

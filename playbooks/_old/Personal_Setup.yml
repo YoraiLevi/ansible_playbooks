@@ -1,0 +1,16 @@
+---
+- hosts: WindowsPersonal
+  roles:
+    - role: windows-software
+    - role: windows-folder-structure
+- hosts: WSLPersonal
+  roles:
+    - role: wsl-personal
+
+  # tasks:
+  #   - name: Personalize Windows
+  #     include: tasks/Personal_Windows.yml
+  #     when: ansible_system == "Win32NT"
+  #   - name: Personalize WSL
+  #     when: ansible_system == "Linux"
+

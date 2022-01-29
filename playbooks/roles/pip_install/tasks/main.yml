@@ -1,0 +1,25 @@
+---
+# tasks file for pip_install
+- name: pip install {{pip_args}}
+  block: # Global Variable Container
+    - name: Checking if Python {{choco_python_version}} is installed...
+      win_command: 'py -{{py_version}} -c "exit"'
+      register: res
+      changed_when: false
+  rescue:
+    - name: Missing Python {{choco_python_version}}, Installing...
+      win_chocolatey:
+        name: python
+        version: "{{choco_python_version}}"
+        allow_multiple: yes
+        become: yes
+  always:
+    - name: Executing... pip install {{pip_args}}
+      win_command: "py -{{py_version}} -m pip install {{pip_args}}"
+      register: pip
+      changed_when: '"Requirement already satisfied:" not in pip.stdout'
+  vars:
+    #if specified X - X.Xx
+    py_version: '{{python_version|regex_search("^((?:\d+.\d+)|\d+)")|default(3,true)}}'
+    #if not specified: 3 -> latest. python 3 is not installed at all then install latest
+    choco_python_version: '{{python_version if py_version else "latest"}}'

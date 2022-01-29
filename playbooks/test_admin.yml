@@ -1,0 +1,38 @@
+---
+- hosts: all
+  tasks:
+    - win_command: "nvm install 14"
+    # - ansible.windows.win_file:
+    # path: C:\Users\devic\foo.conf
+    # state: touch
+    # become: yes
+    # become_user: devic
+    # become_method: runas
+
+    # - ansible.windows.win_whoami:
+    # - name: windows as possibly not admin
+    #   ansible.windows.win_powershell:
+    #     script: |
+    #       $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    #       $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    #   register: pwsh_no_admin
+    #   when: ansible_system == "Win32NT"
+    # - debug: msg="admin?:{{ pwsh_no_admin.output }}"
+    #   when: pwsh_no_admin is defined
+
+    # - name: windows as admin
+    #   ansible.windows.win_powershell:
+    #     script: |
+    #       $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    #       $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    #   register: pwsh_admin
+    #   become: yes
+    #   when: ansible_system == "Win32NT"
+    # - debug: msg="{{ pwsh_admin.output }}"
+    #   when: pwsh_admin is defined
+
+    - name: ping linux
+      ansible.builtin.ping:
+      become: yes
+      when: ansible_system == "Linux"
+# getent group sudo

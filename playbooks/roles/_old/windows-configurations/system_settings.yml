@@ -1,0 +1,20 @@
+- name: Apply personal settings
+  block:
+    - name: Apply registry edits
+      block:
+        - win_tempfile:
+            state: directory
+            suffix: build
+          register: tmp
+          changed_when: false
+        - win_copy:
+            src: ./registry_edits/personal_settings/
+            dest: "{{tmp.path}}/"
+          changed_when: false
+        - win_regmerge:
+            path: "{{tmp.path}}/{{ item }}"
+          loop:
+            - "64-bit_Remove_3D-Objects_Folder_in_This_PC-RECOMMENDED.reg"
+            - "64-bit_Remove_All_user_Folders_in_This_PC.reg"
+            - "admin_uac_password.reg"
+            - "eva.reg"

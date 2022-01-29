@@ -1,0 +1,30 @@
+#!/bin/bash
+if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+    win_ip4=$(cat /etc/resolv.conf | grep nameserver | cut -d ' ' -f 2)
+    win_user=$(powershell.exe 'Write-Host -NoNewLine $env:USERNAME')
+    echo \
+'{
+    "WindowsLocal": {
+        "hosts": ["'$win_ip4'"],
+        "vars": {
+            "ansible_connection": "ssh",
+            "ansible_shell_type":"cmd",
+            "ansible_user": "'$win_user'",
+            "ansible_become_user": "'$win_user'",
+            "ansible_become_method": "runas",
+            "ansible_ssh_common_args": "-o StrictHostKeyChecking=no",
+            "ansible_become": true,
+            "ansible_ssh_private_key_file": "{{winlocal_ssh_private_key_file}}"
+
+        }
+    },
+    "WSLLocal":{
+        "hosts": ["localhost"],
+        "vars":{
+            "ansible_connection": "local"
+        }
+    }
+}'
+else
+    echo "{}"
+fi

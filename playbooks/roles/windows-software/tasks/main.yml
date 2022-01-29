@@ -1,0 +1,70 @@
+- block:
+    - name: Apply registry modifications
+      include_role:
+        name: win_reg_file
+      vars:
+        file_contents: "{{item}}"
+      with_file: "{{windows_software | json_query('*|[?install].reg_edits[*][].name')}}"
+
+    - name: Install chocolatey packages
+      win_chocolatey: "{{item}}"
+      # ansible.builtin.debug:
+      # msg: "{{ item | type_debug }}"
+      loop: "{{windows_software | json_query('*|[?install].choco_packages[*][]')}}"
+      register: res
+
+    - name: Install python packages
+      include_role:
+        name: pip_install
+      vars:
+        pip_args: "{{item.name}}"
+        python_version: "{{item.python_version|default(None)}}"
+      loop: "{{windows_software | json_query('*|[?install].python_packages[*][]')}}"
+      register: res
+
+    - name: Install nodejs modules
+      include_role:
+        name: npm_install
+      vars:
+        npm_args: "{{item.name}}"
+        nodejs_version: "{{item.nodejs_version|default(None)}}"
+      loop: "{{windows_software | json_query('*|[?install].node_modules[*][]')}}"
+
+    - name: Install Windows store application
+      include_role:
+        name: store_install
+      vars:
+        uri: "{{item.uri}}"
+        path: "{{item.path|default(None)}}"
+      loop: "{{windows_software | json_query('*|[?install].windows_store[*][]')}}"
+
+    - name: Set hibernation file size
+      include_role:
+        name: win_hibernate
+      vars:
+        size: "{{item.size}}"
+      loop: "{{windows_software | json_query('*|[?install].win_hibernate[*][]')}}"
+
+    - name: Remove Windows store application
+      ansible.windows.win_powershell:
+        script: |
+          $ErrorActionPreference = "Stop"
+          $Bloat =  "{{item.name}}"
+          $package = Get-AppxPackage -Name $Bloat; if($package -ne $null){$package| Remove-AppxPackage;Write-Output "changed"}else{Write-Output "ok"}
+      register: rmAppx
+      changed_when: '"changed" in rmAppx.output'
+      loop: "{{windows_software | json_query('*|[?install].uninstall_appx[*][]')}}"
+
+    - name: Copy files to Windows
+      win_copy:
+        src: "{{item.src | mandatory}}"
+        dest: "{{item.dest | mandatory}}"
+      loop: "{{windows_software | json_query('*|[?install].win_copy[*][]')}}"
+
+    - name: Add startup items for user
+      include_role:
+        name: win_startup
+      vars:
+        src: "{{item.src}}"
+      loop: "{{windows_software | json_query('*|[?install].win_startup[*][]')}}"    
+

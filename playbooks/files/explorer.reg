@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+; show ext names
+"HideFileExt"=dword:00000000
+; disable checkbox in explorer
+"AutoCheckSelect"=dword:00000000
+

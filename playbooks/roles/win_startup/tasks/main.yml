@@ -1,0 +1,40 @@
+---
+# tasks file for win_startup
+- block:
+    # - debug:
+    # msg: |
+    - ansible.windows.win_powershell:
+        script: |
+          $ErrorActionPreference = 'Stop'
+          function Normalize-Path{
+          param([string]$path)
+          if($path.StartsWith("~")){
+              r = [regex]"~\\|~/"
+              $path = $r.Replace($path,$env:USERPROFILE,1)
+          }
+          if($false -eq [System.IO.Path]::IsPathRooted($path)){
+              $path = "$PWD/$path"
+          }
+          return [IO.Path]::GetFullPath($path)
+          }
+          $TargetPath =  "$({{target}})"
+          $TargetPath = $(Normalize-Path $TargetPath)
+          $WorkingDirectory = $(Split-Path $TargetPath)
+          $StartupPath = [Environment]::GetFolderPath('Startup')
+          $BaseName = [io.path]::GetFileNameWithoutExtension($TargetPath)
+          $ShortcutFile = Join-Path $StartupPath "$BaseName.lnk"
+          $WScriptShell = New-Object -ComObject WScript.Shell
+          $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile)
+          if($Shortcut.TargetPath -ne $TargetPath){
+            Write-Output "changed"
+            $Shortcut.TargetPath = $TargetPath
+            $Shortcut.WorkingDirectory = $WorkingDirectory
+            $Shortcut.Save()
+          }
+          else{
+            Write-Output "ok"
+          }
+      register: pwsh
+      changed_when: '"changed" in pwsh.output'
+  vars:
+    target: '[System.Environment]::ExpandEnvironmentVariables("{{src|mandatory}}")'
