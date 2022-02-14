@@ -1,0 +1,12 @@
+- block:
+  # - name: Remove Windows store application
+  #   debug:
+  #     msg: "{{args}}"
+  - name: Remove Windows store application
+    ansible.windows.win_powershell:
+      script: |
+        $ErrorActionPreference = "Stop"
+        $Bloat =  "{{args.name}}"
+        $package = Get-AppxPackage -Name $Bloat; if($package -ne $null){$package| Remove-AppxPackage;Write-Output "changed"}else{Write-Output "ok"}
+    register: rmAppx
+    changed_when: '"changed" in rmAppx.output'

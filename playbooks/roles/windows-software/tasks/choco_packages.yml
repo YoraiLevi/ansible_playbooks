@@ -1,0 +1,13 @@
+- block:
+  # - name: Install chocolatey packages
+  #   debug:
+  #     msg: "{{args}}"
+  - name: Install chocolatey packages
+    win_chocolatey: "{{args}}"
+    register: choco
+  - name: "Reboot? {{choco.changed and choco.rc == 3010}}"
+    ansible.windows.win_reboot:
+    when: choco.changed and choco.rc == 3010
+
+    # ansible.builtin.debug:
+    # msg: "{{ item | type_debug }}"

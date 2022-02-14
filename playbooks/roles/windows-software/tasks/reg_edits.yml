@@ -1,0 +1,10 @@
+- block:
+  # - name: Apply registry modifications
+  #   debug:
+  #     msg: "{{args}}"
+  - name: Apply registry modifications
+    include_role:
+      name: win_reg_file
+    vars:
+      file_contents: "{{item}}"
+    with_file: "{{args.name}}"

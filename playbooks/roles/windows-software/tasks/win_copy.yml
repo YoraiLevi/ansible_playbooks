@@ -1,0 +1,8 @@
+- block:
+  # - name: Copy files to Windows
+  #   debug:
+  #     msg: "{{args}}"
+  - name: Copy files to Windows
+    win_copy:
+      src: "{{args.src | mandatory}}"
+      dest: "{{args.dest | mandatory}}"

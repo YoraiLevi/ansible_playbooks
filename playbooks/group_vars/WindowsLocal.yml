@@ -2,7 +2,7 @@
 # https://docs.ansible.com/ansible/latest/collections/chocolatey/chocolatey/win_chocolatey_module.html
 windows_software:
   docker_wsl_packages:
-    # # #install: yes
+    # install: yes
     choco_packages:
       # - wsl-ubuntu-2004
       - name: docker-desktop

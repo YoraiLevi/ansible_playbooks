@@ -1,0 +1,5 @@
+---
+# tasks file for win_ini
+- block:
+  vars:
+    nvm_utils_ps1: "{{ lookup('file', 'nvm-utils.ps1') }}"

@@ -1,0 +1,5 @@
+- block:
+  - name: Write ini files
+    debug:
+      msg: "{{args}}"
+    

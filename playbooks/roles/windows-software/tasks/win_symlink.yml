@@ -1,0 +1,5 @@
+- block:
+  - name: Create symlink 
+    debug:
+      msg: "{{args}}"
+    

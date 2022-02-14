@@ -57,11 +57,12 @@ function wsl {
     $command = $args -join ' ' | ForEach-Object { $_ -replace [char]0, '' } | ForEach-Object { $_ -replace "`r?`n", "`r`n" }
     Write-Information "Executing: wsl $command "  
     # if ($PSCmdlet.ShouldProcess("wsl $command")){
+        
     if (-Not [string]::IsNullOrEmpty($command)) {
         try {
             if ($PSVersionTable.PSVersion -ge [Version]'7.2') {
                 #https://stackoverflow.com/a/59376457/12603110
-                $output = &(WSLExe) $command.Split() *>&1 # `&`& exit 
+                &(WSLExe) $command.Split() *>&1 |  Tee-Object -Variable output |  ForEach-Object { Write-Output "$_"; }# `&`& exit 
             }
             else {
                 #https://stackoverflow.com/a/60386296/12603110

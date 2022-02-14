@@ -18,6 +18,7 @@
         # always battery saver
         powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 100
     changed_when: '"changed" in pwsh.output'
+    register: pwsh
 
   vars:
     # on: "{{yes|bool}}"

@@ -1,0 +1,10 @@
+- block:
+  # - name: Add startup items for user
+  #   debug:
+  #     msg: "{{args}}"
+  - name: Add startup items for user
+    include_role:
+      name: win_startup
+    vars:
+      src: "{{args.src}}"
+
