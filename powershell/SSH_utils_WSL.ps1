@@ -1,5 +1,4 @@
-Import-Module $PSScriptRoot\WSL_utils.ps1
-if(-Not (isWSLDistroInstalled)){throw "Couldn't import, WSL is not installed"}
+Import-Module $PSScriptRoot\WSL_utils.ps1 -Force
 function SetupAndStartSSHWSL{
     param([string]$Distro = "Ubuntu-20.04")
 }
@@ -23,6 +22,6 @@ function SetupSSHConnection{
    $PrivateKeyPath = "~/.ssh/$($SSHKeyPathPrivate.Name)"
    $winIP = Get-WinIP
    $address = "$ENV:USERNAME@$winIP"
-   $command = "ssh $address -i $PrivateKeyPath -o StrictHostKeyChecking=no exit"
-   wsl $command
+   $command = "ssh $address -i $PrivateKeyPath -o StrictHostKeyChecking=no exit 0"
+   wsl $command | Out-Null
 }

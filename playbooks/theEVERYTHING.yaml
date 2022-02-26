@@ -1,4 +1,0 @@
----
-- hosts: WindowsLocal
-  roles:
-    - role: windows-software

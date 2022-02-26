@@ -36,12 +36,12 @@ function CreateRegisterSSHPublickeyWindows{
     [System.IO.FileInfo]$SSHKeyPathPrivate = (Join-Path $ENV:USERPROFILE -ChildPath ".ssh" | Join-Path -ChildPath "id_ed25519_$name")
     [System.IO.FileInfo]$SSHKeyPathPublic = ($SSHKeyPathPrivate.FullName + ".pub")
     try{
-    $null = (mkdir $SSHKeyPathPrivate.Directory.FullName) #damn powershell is weird. https://social.technet.microsoft.com/Forums/en-US/57cb76d0-747a-4e77-b5c0-bf2218f5c4a7/very-odd-return-behavior?forum=winserverpowershell
+    $null = mkdir $SSHKeyPathPrivate.Directory.FullName #damn powershell is weird. https://social.technet.microsoft.com/Forums/en-US/57cb76d0-747a-4e77-b5c0-bf2218f5c4a7/very-odd-return-behavior?forum=winserverpowershell
     }catch{}
     #Set SSH key on windows
-    $null = (echo yes | ssh-keygen -t ed25519 -q -C "ansible" -f $SSHKeyPathPrivate.FullName -N """")
+    $null = echo yes | ssh-keygen -t ed25519 -q -C "ansible" -f $SSHKeyPathPrivate.FullName -N """"
     #encoding must be ascii and not utf
-    $null = (cat $SSHKeyPathPublic.FullName | Out-File -Encoding ASCII -FilePath $ENV:ProgramData\ssh\administrators_authorized_keys)
+    $null = cat $SSHKeyPathPublic.FullName | Out-File -Encoding ASCII -FilePath $ENV:ProgramData\ssh\administrators_authorized_keys
     
     #Set Permissions correctly for authorized keys file https://superuser.com/a/1605117/1220772
     $acl = Get-Acl $ENV:ProgramData\ssh\administrators_authorized_keys
@@ -52,8 +52,8 @@ function CreateRegisterSSHPublickeyWindows{
     $acl.SetAccessRule($systemRule)
     $acl | Set-Acl
     
-    $null = (Restart-Service sshd)
+    $null = Restart-Service sshd
     #Connect to SSH
-    $null = (ssh localhost -i $SSHKeyPathPrivate -o StrictHostKeyChecking=no exit 0)
+    $null = ssh localhost -i $SSHKeyPathPrivate -o StrictHostKeyChecking=no exit 0
     return $SSHKeyPathPrivate
 }

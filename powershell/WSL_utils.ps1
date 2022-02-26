@@ -72,9 +72,10 @@ function wsl {
             }
         }
         catch { $_ | Format-List * -Force | Out-String }
+        
         # https://github.com/microsoft/WSL/issues/7865 -- truncate excess null chars
         $output = (($output -join ('' | Out-String)) | ForEach-Object { $_ -replace [char]0, '' })
-        Write-Host `r
+        Write-Host `r -NoNewline
         [Console]::Out.Flush() 
         # https://github.com/microsoft/WSL/issues/6192 -- help returns -1 exit code
         Write-Information "Exited with code: $lastexitcode"
@@ -93,7 +94,6 @@ function wsl {
 
 
 function isWSLDistroInstalled {
-    param()
     $ErrorActionPreference = 'Stop'
     if(isWSLInstalled){
         #Distro is installed
@@ -153,3 +153,4 @@ function Set-DefaultWSLUser() {
 }
 function Create-WSLUser() {
 }
+if(-Not (isWSLDistroInstalled)){throw "Couldn't import, WSL is not installed"}
