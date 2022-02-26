@@ -25,4 +25,4 @@ SetupSSHConnection $SSHKeyPathPrivateWindowsPath | Out-Null #| Write-Information
 Write-Host $SSHKeyPathPrivateWindowsPath
 Write-Output $SSHKeyPathPrivateWindowsPath
 #Setup Ansible on WSL
-Write-Host Setup-Ansible
+Setup-Ansible | Write-Host
