@@ -19,4 +19,4 @@ else {
 }
 #Setup-Ansible
 Execute-Playbook -playbookFile $playbookFile -keyFile $keyFile -inventoryFile $inventoryFile -v:$v.IsPresent
-#.\Cleanup.ps1
+.\Cleanup.ps1

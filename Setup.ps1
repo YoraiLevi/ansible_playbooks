@@ -22,6 +22,7 @@ $SSHKeyPathPrivateWindowsPath = CreateRegisterSSHPublickeyWindows
 #Setup SSH on WSL
 RegisterSSHPrivatekeyWSL $SSHKeyPathPrivateWindowsPath | Out-Null #| Write-Information
 SetupSSHConnection $SSHKeyPathPrivateWindowsPath | Out-Null #| Write-Information
+Write-Host $SSHKeyPathPrivateWindowsPath
 Write-Output $SSHKeyPathPrivateWindowsPath
 #Setup Ansible on WSL
-Setup-Ansible
+Write-Host Setup-Ansible
