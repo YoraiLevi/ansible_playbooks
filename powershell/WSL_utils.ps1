@@ -23,7 +23,6 @@ function wsl {
             if ($val.StartsWith('~')) { throw 'Maybe WSL path, not converting' };
             if ($val.StartsWith('$')) { throw 'Maybe bash argument, not converting' };
             $pathObject = ([System.IO.FileInfo]($val)); # Throws if path cannot ever exist on windows.
-        
             if ([System.IO.Path]::IsPathRooted($val)) {
                 #Convert root path
                 $path = $pathObject.FullName;   
@@ -62,7 +61,7 @@ function wsl {
         try {
             if ($PSVersionTable.PSVersion -ge [Version]'7.2') {
                 #https://stackoverflow.com/a/59376457/12603110
-                &(WSLExe) $command.Split() *>&1 |  Tee-Object -Variable output |  ForEach-Object { Write-Output "$_"; }# `&`& exit 
+                &(WSLExe) $command.Split() *>&1 |  Tee-Object -Variable output | ForEach-Object { $_ -replace [char]0, '' } |  ForEach-Object { Write-Output "$_"; }# `&`& exit 
             }
             else {
                 #https://stackoverflow.com/a/60386296/12603110
@@ -93,22 +92,29 @@ function wsl {
 
 
 function isWSLDistroInstalled {
-    param([string]$Distro = 'Ubuntu-20.04')
+    param()
     $ErrorActionPreference = 'Stop'
-    #return $true #--list returns error but there is and issue with stderr
-    try {
-        $list = -join (wsl '--list')
+    if(isWSLInstalled){
+        #Distro is installed
+        return (wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)
     }
-    catch {
-        return $false
-    }
-    if ($LASTEXITCODE -ne 0) {
-        return $false
-    }
-    #    $help = wsl "--help" | Out-String
-    #    # When a distro is installed list and help have different output
-    #    return -Not ($help -eq $list) -and 
-    return $list.IndexOf($Distro, [System.StringComparison]::CurrentCultureIgnoreCase) -ge 0
+    return $false
+    # wsl --help == wsl --list (no wsl2?) 
+    # wsl --list == wsl bashcommand (no repo)
+    # #return $true #--list returns error but there is and issue with stderr
+    # try {
+    #     $list = -join (wsl '--list')
+    # }
+    # catch {
+    #     return $false
+    # }
+    # if ($LASTEXITCODE -ne 0) {
+    #     return $false
+    # }
+    # #    $help = wsl "--help" | Out-String
+    # #    # When a distro is installed list and help have different output
+    # #    return -Not ($help -eq $list) -and 
+    # return $list.IndexOf($Distro, [System.StringComparison]::CurrentCultureIgnoreCase) -ge 0
     
 }
 function InstallWSL {
