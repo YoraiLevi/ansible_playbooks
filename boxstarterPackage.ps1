@@ -1,12 +1,11 @@
-$attempts = Get-Item $env:TEMP\BOXSTARTERATTEMPT* -ErrorAction SilentlyContinue; $currentAttempt = ($attempts.Length)?$attempts.Length+1:($attempts)?2:1
 if (-Not (Get-Command wsl.exe) -and (wsl cat /proc/version | Out-String) -eq (wsl --help | Out-String)){
-    while($currentAttempt -le 5){
+    while($currentAttempt -lt 5){
+        $attempts = Get-Item $env:TEMP\BOXSTARTERATTEMPT* -ErrorAction SilentlyContinue; $currentAttempt = if($attempts.Length){$attempts.Length+1}else{if($attempts){2}else{1}};New-Item "$env:TEMP\BOXSTARTERATTEMPT$currentAttempt"
         Write-Host "Attempting to install wsl2"
         choco install wsl2 --params "/Version:2 /Retry:true"
         # Restart?
         Write-Host "Attempting to install wsl-ubuntu-2004"
         choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
-        New-Item "$env:TEMP\BOXSTARTERATTEMPT$currentAttempt"
     }
 }
 # Delete Attempts after done
