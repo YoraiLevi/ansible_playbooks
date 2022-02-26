@@ -12,7 +12,8 @@ while (($currentAttempt -lt 5) -and (-Not (Get-Command wsl.exe) -or (wsl cat /pr
 cinst git
 cd $env:TEMP
 git clone "https://github.com/YoraiLevi/MyFuckingWikiOfEverything.git"
-cd Ansible
+cd "MyFuckingWikiOfEverything/Ansible"
+.\ExecutePlaybook.ps1 -playbookFile .\playbooks\ping.yml -inventoryFile .\playbooks\inventories\localWindowsWSL\
 # execute theEverything playbook
 
 
