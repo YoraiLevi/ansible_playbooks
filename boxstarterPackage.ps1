@@ -1,5 +1,5 @@
 $attempts = Get-Item $env:TEMP\BOXSTARTERATTEMPT* -ErrorAction SilentlyContinue; $currentAttempt = ($attempts.Length)?$attempts.Length+1:($attempts)?2:1
-if (-Not (Get-Command wsl.exe) && (wsl cat /proc/version | Out-String) -eq (wsl --help | Out-String)){
+if (-Not (Get-Command wsl.exe) -and (wsl cat /proc/version | Out-String) -eq (wsl --help | Out-String)){
     while($currentAttempt -le 5){
         Write-Host "Attempting to install wsl2"
         choco install wsl2 --params "/Version:2 /Retry:true"
