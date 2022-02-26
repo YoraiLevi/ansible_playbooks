@@ -1,4 +1,5 @@
 if (-Not (Get-Command wsl.exe) -or (wsl cat /proc/version | Out-String) -eq (wsl --help | Out-String)){
+    $currentAttempt = 0;
     while($currentAttempt -lt 5){
         $attempts = Get-Item $env:TEMP\BOXSTARTERATTEMPT* -ErrorAction SilentlyContinue; $currentAttempt = if($attempts.Length){$attempts.Length+1}else{if($attempts){2}else{1}};New-Item "$env:TEMP\BOXSTARTERATTEMPT$currentAttempt"
         Write-Host "Attempting to install wsl2"
