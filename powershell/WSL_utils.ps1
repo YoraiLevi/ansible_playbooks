@@ -13,6 +13,7 @@ function wsl {
     #TODO make bash multiline \ work.
     #TODO Add whatif and confirm
     #TODO continous std out rather than at end
+    $WSLExe = Get-WSLExe
     $args = ($args -join ' ').split()
     $args = $args | ForEach-Object { #foreach begi
         $val = $_;
@@ -96,7 +97,7 @@ function isWSLDistroInstalled {
     $ErrorActionPreference = 'Stop'
     if(isWSLInstalled){
         #Distro is installed
-        return (wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)
+        return (wsl cat /proc/version | Out-String) -ne (wsl --list | Out-String)
     }
     return $false
     # wsl --help == wsl --list (no wsl2?) 
