@@ -3,7 +3,7 @@ function SetupAndStartSSHWindows {
     if ((Get-WindowsCapability -Online -ErrorAction Stop | ? Name -like 'OpenSSH.Server*').State -ne "Installed") {
         Write-Information "SSH is not installed, installing..."
         Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-        New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+        # New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
         Start-Service sshd
     }
     else {
@@ -36,12 +36,12 @@ function CreateRegisterSSHPublickeyWindows{
     [System.IO.FileInfo]$SSHKeyPathPrivate = (Join-Path $ENV:USERPROFILE -ChildPath ".ssh" | Join-Path -ChildPath "id_ed25519_$name")
     [System.IO.FileInfo]$SSHKeyPathPublic = ($SSHKeyPathPrivate.FullName + ".pub")
     try{
-    $null = mkdir $SSHKeyPathPrivate.Directory.FullName #damn powershell is weird. https://social.technet.microsoft.com/Forums/en-US/57cb76d0-747a-4e77-b5c0-bf2218f5c4a7/very-odd-return-behavior?forum=winserverpowershell
+    mkdir $SSHKeyPathPrivate.Directory.FullName | Write-Host #damn powershell is weird. https://social.technet.microsoft.com/Forums/en-US/57cb76d0-747a-4e77-b5c0-bf2218f5c4a7/very-odd-return-behavior?forum=winserverpowershell
     }catch{}
     #Set SSH key on windows
-    $null = echo yes | ssh-keygen -t ed25519 -q -C "ansible" -f $SSHKeyPathPrivate.FullName -N """"
+    echo yes | ssh-keygen -t ed25519 -q -C "ansible" -f $SSHKeyPathPrivate.FullName -N """" | Out-Host 
     #encoding must be ascii and not utf
-    $null = cat $SSHKeyPathPublic.FullName | Out-File -Encoding ASCII -FilePath $ENV:ProgramData\ssh\administrators_authorized_keys
+    cat $SSHKeyPathPublic.FullName | Out-File -Encoding ASCII -FilePath $ENV:ProgramData\ssh\administrators_authorized_keys | Out-Host 
     
     #Set Permissions correctly for authorized keys file https://superuser.com/a/1605117/1220772
     $acl = Get-Acl $ENV:ProgramData\ssh\administrators_authorized_keys
@@ -52,8 +52,13 @@ function CreateRegisterSSHPublickeyWindows{
     $acl.SetAccessRule($systemRule)
     $acl | Set-Acl
     
-    $null = Restart-Service sshd
+    Restart-Service sshd | Out-Host 
     #Connect to SSH
-    $null = ssh localhost -i $SSHKeyPathPrivate -o StrictHostKeyChecking=no exit 0
+    try{
+        ssh localhost -i $SSHKeyPathPrivate -o StrictHostKeyChecking=no exit 0 | Out-Host 
+    }
+    catch{
+        echo 1
+    }
     return $SSHKeyPathPrivate
 }

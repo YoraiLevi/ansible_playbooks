@@ -17,12 +17,12 @@ $ErrorActionPreference = 'Stop'
 #}
 
 #Setup SSH on Windows
-SetupAndStartSSHWindows | Out-Null #| Write-Information
+SetupAndStartSSHWindows | Out-Host #| Write-Information
 $SSHKeyPathPrivateWindowsPath = CreateRegisterSSHPublickeyWindows
 #Setup SSH on WSL
-RegisterSSHPrivatekeyWSL $SSHKeyPathPrivateWindowsPath | Out-Null #| Write-Information
-SetupSSHConnection $SSHKeyPathPrivateWindowsPath | Out-Null #| Write-Information
+RegisterSSHPrivatekeyWSL $SSHKeyPathPrivateWindowsPath | Out-Host #| Write-Information
+SetupSSHConnection $SSHKeyPathPrivateWindowsPath | Out-Host #| Write-Information
 Write-Host $SSHKeyPathPrivateWindowsPath
 Write-Output $SSHKeyPathPrivateWindowsPath
 #Setup Ansible on WSL
-Setup-Ansible | Write-Host
+# Setup-Ansible | Write-Host

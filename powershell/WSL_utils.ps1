@@ -36,17 +36,17 @@ function wsl {
                 #throw "Likely a random argument"
             }
             $path = $path.replace('\', '\\').replace(' ', '\ ')
-            if ($PSVersionTable.PSVersion -ge [Version]'7.2') {
-                #https://stackoverflow.com/a/59376457/12603110
-                $path = (&(WSLExe) wslpath $path 2> $null); 
-            }
-            # Weirdly indents first line when stderr is redirected. weird.
-            else {
+            # if ($PSVersionTable.PSVersion -ge [Version]'7.2') {
+            #     #https://stackoverflow.com/a/59376457/12603110
+            #     $path = (&(WSLExe) wslpath $path 2> $null); 
+            # }
+            # # Weirdly indents first line when stderr is redirected. weird.
+            # else {
                 #https://stackoverflow.com/a/60386296/12603110
                 $psCommand = "$(WSLExe) wslpath $path"
                 $cmdCommand = Convert-StringCMD $psCommand
                 $path = $(cmd.exe /c $cmdCommand" 2>nul") #delete stderr cuz irrelevant when failure
-            }
+            # }
             if ($LASTEXITCODE -ne 0) { throw 'failed to convert path' }
             return $path
         }
@@ -60,16 +60,16 @@ function wsl {
         
     if (-Not [string]::IsNullOrEmpty($command)) {
         try {
-            if ($PSVersionTable.PSVersion -ge [Version]'7.2') {
-                #https://stackoverflow.com/a/59376457/12603110
-                &(WSLExe) $command.Split() *>&1 |  Tee-Object -Variable output | ForEach-Object { $_ -replace [char]0, '' } |  ForEach-Object { Write-Output "$_"; }# `&`& exit 
-            }
-            else {
+            # if ($PSVersionTable.PSVersion -ge [Version]'7.2') {
+            #     #https://stackoverflow.com/a/59376457/12603110
+            #     &(WSLExe) $command.Split() *>&1 |  Tee-Object -Variable output | ForEach-Object { $_ -replace [char]0, '' } |  ForEach-Object { Write-Output "$_"; }# `&`& exit 
+            # }
+            # else {
                 #https://stackoverflow.com/a/60386296/12603110
                 $psCommand = "$(WSLExe) $($command.Split())"
                 $cmdCommand = Convert-StringCMD $psCommand
                 cmd.exe /c $cmdCommand" 2>&1" | ForEach-Object { $_ -join ('') } | Tee-Object -Variable output | ForEach-Object { $_ -replace [char]0, '' } | ForEach-Object { $_.trimend() } | ForEach-Object { $_ -replace "`r?`n", "`r`n" } | ForEach-Object { Write-Output "$_"; }
-            }
+            # }
         }
         catch { $_ | Format-List * -Force | Out-String }
         

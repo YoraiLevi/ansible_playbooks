@@ -17,9 +17,6 @@ if ((Is-NullOrEmpty $keyFilePath) -eq $true) {
 else {
     $keyFile = $keyFilePath
 }
-Write-Host "AAAAAAAAAAAAAAAa"
-Write-Host $keyFile
-Write-Host $inventoryFile
 #Setup-Ansible
 Execute-Playbook -playbookFile $playbookFile -keyFile $keyFile -inventoryFile $inventoryFile -v:$v.IsPresent
 .\Cleanup.ps1
