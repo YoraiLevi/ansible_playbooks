@@ -1,5 +1,5 @@
-Import-Module $PSScriptRoot\WSL_utils.ps1
-Import-Module $PSScriptRoot\Powershell_utils.ps1 -Force
+Import-Module $PSScriptRoot\WSL_utils.psm1
+Import-Module $PSScriptRoot\Powershell_utils.psm1
 function Setup-Ansible {
     wsl '--user root apt update && apt install ansible python3-pip -y'
     wsl 'ansible-galaxy collection install ansible.windows'

@@ -1,0 +1,7 @@
+windows_software_test:
+  docker_wsl_packages:
+    # install: yes
+    choco_packages:
+      # - wsl-ubuntu-2004
+      - name: docker-desktop
+      - name: wsl2

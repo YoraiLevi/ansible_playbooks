@@ -1,4 +1,4 @@
-Import-Module $PSScriptRoot\WSL_utils.ps1 -Force
+Import-Module $PSScriptRoot\WSL_utils.psm1
 function SetupAndStartSSHWSL{
     param([string]$Distro = "Ubuntu-20.04")
 }

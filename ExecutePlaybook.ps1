@@ -3,10 +3,12 @@
 param([string]$playbookFile,
     [string]$keyFilePath,
     [string]$inventoryFile,
-    [switch]$v = $false
+    [switch]$v = $false,
+    [switch]$dontClear = $false
 )
-Import-Module $PSScriptRoot\powershell\Ansible_utils.ps1 -Force
-Import-Module $PSScriptRoot\powershell\WSL_utils.ps1 -Force
+Import-Module $PSScriptRoot\powershell\Ansible_utils.psm1
+Import-Module $PSScriptRoot\powershell\WSL_utils.psm1 -Force
+Import-Module $PSScriptRoot\powershell\Powershell_utils.psm1
 
 $ErrorActionPreference = 'Stop'
 # $winIP = Get-WinIP
@@ -19,4 +21,6 @@ else {
 }
 #Setup-Ansible
 Execute-Playbook -playbookFile $playbookFile -keyFile $keyFile -inventoryFile $inventoryFile -v:$v.IsPresent
-.\Cleanup.ps1
+if ((Is-NullOrEmpty $keyFilePath) -eq $true) {
+    .\Cleanup.ps1
+}

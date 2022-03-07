@@ -1,4 +1,34 @@
 ---
-- hosts: WindowsLocal
-  roles:
-    - role: windows-software
+- hosts: all
+  pre_tasks:
+    - win_board_product_facts:
+      when: ansible_facts['system']  == "Win32NT"
+    # - board_product_facts: #TODO Make compatible with linux
+      # when: ansible_system == "Linux"
+  tasks:
+    - block:       
+      - include_vars: "{{ lookup('first_found', params) }}"
+        vars:
+          params:
+            files: "{{_files}}"
+            paths:
+              - 'vars'
+      - include_tasks: "{{ lookup('first_found', params) }}"
+        vars:
+          params:
+            files: "{{_files}}"
+            paths:
+              - '{{playbook_dir}}'
+              - 'tasks'
+      vars:
+        _vars_regex: "{{__files | reverse  | join('|')}}"
+        _files: "{{__files | select | product(['.yml','.yaml']) | map('join') | list}}" 
+        __files:
+          - "{{ansible_facts['nodename']|default(omit,true)}}"          #nodename: DESKTOP-4GPCEHO / DESKTOP-4GPCEHO
+          - "{{ansible_facts['baseboard_product']|default(omit,true)}}" #Motherboard: ***** / TP412FAC
+          - "{{ansible_facts['distribution']|default(omit,true)}}"      #Ubuntu / Microsoft Windows 11 Home
+          - "{{ansible_facts['os_family']|default(omit,true)}}"         #Debian / Windows
+          - "{{ansible_facts['system']|default(omit,true)}}"            #Linux / Win32NT
+          - default
+  # Remote setup
+  # Self setup

@@ -1,5 +1,10 @@
 - block:
   - name: KnownFolders
-    debug:
-      msg: "{{args}}"
+    include_role:
+      name: win_knownFolders
+    vars:
+      knownFolder: "{{args.knownFolder | mandatory}}"
+      path: "{{args.path | mandatory}}"
+    # debug:
+      # msg: "{{args}}"
     

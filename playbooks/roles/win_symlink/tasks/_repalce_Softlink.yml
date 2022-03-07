@@ -1,8 +1,10 @@
 - block:
   - block:
     - name: check if process exists
-      win_command: powershell.exe -command "Get-Process {{item}}"
+      win_command: powershell.exe -command "Get-Process {{_replace_softlink_loop}}"
       loop: "{{folder.processes}}" #"{{query(folder.processes)}}"
+      loop_control:
+        loop_var: _replace_softlink_loop
       when: folder.processes is defined
       register: res
       failed_when: 'res.rc == 0'

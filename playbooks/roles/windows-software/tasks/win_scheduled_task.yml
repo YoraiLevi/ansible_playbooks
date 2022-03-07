@@ -1,0 +1,3 @@
+- block:
+    - name: Windows Task Scheduler
+      community.windows.win_scheduled_task: "{{args}}"

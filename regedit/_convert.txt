@@ -1,0 +1,1 @@
+ get-item .\regedit\* | foreach-object {get-content  $_ | out-file ("." + $_.Name) -encoding utf8}                   

@@ -1,0 +1,8 @@
+$o.Namespace('C:\boot\').self.InvokeVerb("unpintohome")
+(Get-ItemProperty -Path 'HKLM:\SYSTEM\HardwareConfig\Current\').SystemProductName
+$a.BaseBoardProduct
+$a.SystemProductName
+
+
+
+(Get-ItemProperty -Path 'HKLM:\SYSTEM\HardwareConfig\Current\').SystemProductName.replace(" ",".")

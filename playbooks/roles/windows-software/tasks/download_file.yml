@@ -1,0 +1,3 @@
+- block:
+  - name: Download "{{args.url}}"
+    win_get_url: "{{args}}"

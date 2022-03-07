@@ -1,11 +1,15 @@
 #https://stackoverflow.com/questions/70254096/system-io-fileinfo-and-relative-paths
-Import-Module $PSScriptRoot\CMD_utils.ps1 -Force
+Import-Module $PSScriptRoot\CMD_utils.psm1
 
 function isWSLInstalled {
     return -Not [string]::IsNullOrEmpty($(Get-WSLExe))
 }
 function Get-WSLExe {
-    return ((Get-Command wsl -All -ErrorAction Stop) | Where-Object -Property Source).Source
+    $val =  ((Get-Command wsl -All -ErrorAction Stop) | Where-Object -Property Source -Like "*.exe")
+    if($val.length -ge 2){
+        throw "Something is wrong: $val"
+    }
+    return $val.Source
 }
 
 function wsl {
@@ -14,6 +18,7 @@ function wsl {
     #TODO Add whatif and confirm
     #TODO continous std out rather than at end
     $WSLExe = Get-WSLExe
+    $args | %{Write-Information $_}
     $args = ($args -join ' ').split()
     $args = $args | ForEach-Object { #foreach begi
         $val = $_;
@@ -45,7 +50,9 @@ function wsl {
                 #https://stackoverflow.com/a/60386296/12603110
                 $psCommand = "$(WSLExe) wslpath $path"
                 $cmdCommand = Convert-StringCMD $psCommand
+                Write-Information "Executing: $cmdCommand"
                 $path = $(cmd.exe /c $cmdCommand" 2>nul") #delete stderr cuz irrelevant when failure
+                $path = if($path.contains(' ')){"`"$path`""}else{$path}
             # }
             if ($LASTEXITCODE -ne 0) { throw 'failed to convert path' }
             return $path
@@ -153,4 +160,4 @@ function Set-DefaultWSLUser() {
 }
 function Create-WSLUser() {
 }
-if(-Not (isWSLDistroInstalled)){throw "Couldn't import, WSL is not installed"}
+# if(-Not (isWSLDistroInstalled)){throw "Couldn't import, WSL is not installed"}

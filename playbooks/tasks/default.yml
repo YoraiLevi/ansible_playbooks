@@ -1,0 +1,3 @@
+- block:
+    - debug:
+        msg: "Default Task Executed"

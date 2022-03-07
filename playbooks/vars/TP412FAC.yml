@@ -1,0 +1,148 @@
+---
+root: "%userprofile%" #cmd path
+windows_software:
+  root_dir_structure:
+    install: yes
+    win_desktopini:
+      - path: "{{root}}\\Documents\\source"
+        IconResource: C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico,0
+      - path: "{{root}}\\VirtualMachines"
+        IconResource: 'C:\Windows\System32\setupapi.dll,47'
+      - path: "{{root}}\\bin"
+        IconResource: 'C:\WINDOWS\System32\SHELL32.dll,314'
+      - path: "{{root}}\\Games"
+        IconResource: 'C:\Windows\system32\setupapi.dll,36'
+    win_file:
+      - path: "{{root}}\\Documents\\source\\thirdparty"
+        state: directory
+      - path: "{{root}}\\Documents\\source\\inDev"
+        state: directory
+      - path: "{{root}}\\Documents\\source\\trashDev"
+        state: directory
+      - path: "{{root}}\\VirtualMachines\\Virtual Hard Disks"
+        state: directory
+      # linux dirs
+      - path: "{{root}}\\bin"
+        state: directory
+      - path: "{{root}}\\etc"
+        state: directory
+      - path: "{{root}}\\opt"
+        state: directory
+  wsl_packages:
+    install: yes
+    choco_packages:
+      - name: wsl-ubuntu-2004
+      - name: wsl2
+  general_dev_tools:
+    install: yes
+    choco_packages:
+      - name: wsl2
+      - name: docker-desktop
+      - name: gsudo
+      - name: git
+      - name: poshgit
+      - name: vscode
+      - name: powershell-core
+  misc:
+    install: yes
+    choco_packages:
+      - name: 7zip
+      - name: autohotkey
+      - name: Everything
+      - name: vlc
+      - name: Recuva
+      - name: windirstat
+      - name: discord
+      - name: zoom
+      - name: jdownloader
+      - name: qbittorrent
+      - name: bitwarden
+      - name: google-drive-file-stream
+      - name: office365business
+        package_params: '/exclude:"Access Groove Lync OneDrive OneNote Outlook Publisher" /eula:"true"'
+  misc_misc:
+    install: yes
+    choco_packages:
+      - name: audacity
+      - name: audacity-ffmpeg
+  java:
+    - name: jre8
+    - name: jdk8
+  rust:
+    install: yes
+    choco_packages:
+      - name: cmake
+      - name: cygwin
+      - name: make
+      - name: rust
+      - name: bazel
+  go:
+    install: yes
+    choco_packages:
+      - name: golang
+  python:
+    install: yes
+    python_packages:
+      - name: pip --upgrade
+      - name: tox
+      - name: black
+      - name: virtualenv
+  nodejs:
+    install: yes
+    node_modules:
+      - name: npm
+      - name: typescript
+      - name: ts-node
+      - name: eslint
+      - name: prettier
+    choco_packages:
+      - name: curl
+      - name: wget
+  store:
+    install: yes
+    windows_store:
+      - uri: "https://www.microsoft.com/en-us/p/dynamic-theme/9nblggh1zbkw"
+  bloatware:
+    install: yes
+    uninstall_appx:
+      - name: "Microsoft.BingNews"
+      - name: "Disney.37853FC22B2CE"
+  apply_reg:
+    install: yes
+    reg_edits:
+      - name: 115ScaleFactor.reg
+      - name: admin_uac_password.reg
+      - name: automaticAccentColor.reg
+      - name: Disable_Caps_Lock.reg
+      - name: Disable_Chat_icon_on_taskbar_for_all_users.reg
+      - name: Enable Last Active Click.reg
+      - name: Enable_Clipboard_sync_across_devices_for_all_users.reg
+      - name: eva.reg
+      - name: explorer.reg
+      - name: Remove_Chat_button_on_taskbar_in_Windows_11.reg
+      - name: Remove_Widgets_button_on_taskbar_in_Windows_11.reg
+      - name: Restore the classic context menus in Windows 11.reg
+      - name: Show open windows only.reg
+      - name: Start_Layout_show_more_recommendations.reg
+      - name: Turn_ON_Clipboard_History_for_current_user.reg
+      - name: Turn_ON_screen_rotation_lock.reg
+      - name: Use_Dark_theme_color_for_default_app_mode_for_current_user.reg
+      - name: Use_Dark_theme_color_for_default_Windows_mode_for_current_user.reg
+  set_hibernate:
+    install: yes
+    win_hibernate:
+      - size: 100
+  startup_programs:
+    install: yes
+    download_file:
+      - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/main.exe
+        dest: "{{root}}/bin/TTS"
+      - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/Vivobook_ASUSLaptop.TP412FAC_TP412FA.exe
+        dest: "{{root}}/bin/KeyboardRemap"
+    win_startup:
+      - src: "{{root}}/bin/TTS/main.exe"
+      - src: "{{root}}/bin/KeyboardRemap/Vivobook_ASUSLaptop.TP412FAC_TP412FA.exe"
+  misc_laptop:
+      install: yes
+      choco_packages:
+        - name: BatteryBar

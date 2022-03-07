@@ -16,7 +16,8 @@ try {
     .\ExecutePlaybook.ps1 -playbookFile .\playbooks\ping.yml -inventoryFile .\playbooks\inventories\localWindowsWSL\
 }
 catch{
-    Invoke-Reboot
+    # If git is not in path, restart...
+    Invoke-Reboot 
 }
 # execute theEverything playbook
 
