@@ -2,7 +2,7 @@
   # - name: Install chocolatey packages
   #   debug:
   #     msg: "{{args}}"
-  - name: Install chocolatey packages
+  - name: "Install chocolatey packages ({{args.name}})"
     win_chocolatey: "{{args}}"
     register: choco
   - name: "Reboot? {{choco.changed and choco.rc == 3010}}"
