@@ -13,7 +13,7 @@ cinst git
 cd $env:TEMP; rm "MyFuckingWikiOfEverything" -Force -Recurse -ErrorAction SilentlyContinue
 try {
     git clone "https://github.com/YoraiLevi/MyFuckingWikiOfEverything.git"; cd "MyFuckingWikiOfEverything/Ansible"
-    .\ExecutePlaybook.ps1 -playbookFile .\playbooks\ping.yml -inventoryFile .\playbooks\inventories\localWindowsWSL\
+    .\ExecutePlaybook.ps1 -playbookFile .\playbooks\theEVERYTHING.yml -inventoryFile .\playbooks\inventories\localWindowsWSL\
 }
 catch{
     # If git is not in path, restart...
