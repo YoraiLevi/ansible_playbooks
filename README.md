@@ -15,3 +15,4 @@ TODOS:
 * create modules intead of roles for windows
 * auto scan for custom facts module. linux + windows with no error
 * win_reg_file cannot proccess hex: type correctly (binary) aka no capslock .reg
+* Issue with installing python (when not installed) via choco

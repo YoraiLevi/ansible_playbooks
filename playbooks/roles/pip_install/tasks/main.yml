@@ -10,8 +10,8 @@
     - name: Missing Python {{choco_python_version}}, Installing...
       win_chocolatey:
         name: python
-        version: "{{choco_python_version}}"
-        allow_multiple: yes
+        # version: "{{choco_python_version}}"
+        # allow_multiple: yes
         become: yes
   always:
     - name: Executing... pip install {{pip_args}}
