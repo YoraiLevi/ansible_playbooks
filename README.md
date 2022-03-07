@@ -16,3 +16,5 @@ TODOS:
 * auto scan for custom facts module. linux + windows with no error
 * win_reg_file cannot proccess hex: type correctly (binary) aka no capslock .reg
 * Issue with installing python (when not installed) via choco
+* download_file needs the directory to be already made
+* nvm needs restart after installing or it is not available in path
