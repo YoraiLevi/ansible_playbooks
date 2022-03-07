@@ -14,3 +14,4 @@ TODOS:
 * read any file format (utf16 issue)
 * create modules intead of roles for windows
 * auto scan for custom facts module. linux + windows with no error
+* win_reg_file cannot proccess hex: type correctly (binary) aka no capslock .reg

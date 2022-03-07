@@ -140,7 +140,7 @@ windows_software:
     reg_edits:
       - name: admin_uac_password.reg
       - name: automaticAccentColor.reg
-      - name: Disable_Caps_Lock.reg
+      # - name: Disable_Caps_Lock.reg
       - name: Disable_Chat_icon_on_taskbar_for_all_users.reg
       - name: Enable Last Active Click.reg
       - name: Enable_Clipboard_sync_across_devices_for_all_users.reg
