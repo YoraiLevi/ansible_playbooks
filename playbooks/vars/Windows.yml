@@ -154,9 +154,9 @@ windows_software:
     install: yes
     download_file:
       - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/main.exe
-        dest: "{{root}}/bin/TTS"
+        dest: "{{root}}/bin/TTS/main.exe"
       - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/BaseRemap.exe
-        dest: "{{root}}/bin/KeyboardRemap"
+        dest: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
     win_startup:
       - src: "{{root}}/bin/TTS/main.exe"
       - src: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
