@@ -21,3 +21,4 @@ TODOS:
 * use only main monitor Displayswitch.exe /internal
 choco install mousewithoutborders --version 2.2.1.327 -y
 choco install wiztree --version 4.08 -y
+Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\i8042prt the Start key should be changed from 3 to 1 (ps2 keyboard)
