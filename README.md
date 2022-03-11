@@ -19,3 +19,5 @@ TODOS:
 * download_file needs the directory to be already made
 * nvm needs restart after installing or it is not available in path
 * use only main monitor Displayswitch.exe /internal
+choco install mousewithoutborders --version 2.2.1.327 -y
+choco install wiztree --version 4.08 -y
