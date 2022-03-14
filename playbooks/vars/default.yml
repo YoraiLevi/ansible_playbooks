@@ -4,4 +4,4 @@ windows_software_test:
     choco_packages:
       # - wsl-ubuntu-2004
       - name: docker-desktop
-      - name: wsl2
+      # - name: wsl2

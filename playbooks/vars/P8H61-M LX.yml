@@ -56,11 +56,11 @@ windows_software:
         state: directory
       - path: "{{root}}\\opt"
         state: directory
-  wsl_packages:
-    install: yes
-    choco_packages:
-      - name: wsl-ubuntu-2004
-      - name: wsl2
+  # wsl_packages:
+    # install: yes
+    # choco_packages:
+      # - name: wsl-ubuntu-2004
+      # - name: wsl2
   general_dev_tools:
     install: yes
     choco_packages:
