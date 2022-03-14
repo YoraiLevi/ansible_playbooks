@@ -15,11 +15,16 @@ while ($true) {
         }
         if ((wsl --list | out-string) -eq (wsl --help | out-string)) {
             Write-Host "Attempting to install wsl2"
-            wsl --update
-            wsl --shutdown
-            # choco install wsl2 --params "/Version:2 /Retry:true"
+            try{
+                choco install wsl2 --params "/Version:2 /Retry:true"
+            }
+            catch{
+                Invoke-Reboot
+            }
         }
         if ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
+            wsl --update
+            wsl --shutdown
             Write-Host "Attempting to install wsl-ubuntu-2004"
             choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
             Write-Host "Waiting for distro to register..."
