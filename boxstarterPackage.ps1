@@ -4,12 +4,14 @@ while ($true) {
     try {
         if ((wsl cat /proc/version | Out-String) -ne (wsl --list | Out-String)) {
             #distro installed. no need to do anything.
+            Write-Host "Distro is installed..."
             break;
         }
         $attempts = Get-Item $env:TEMP\BOXSTARTERATTEMPT* -ErrorAction SilentlyContinue; $currentAttempt = if ($attempts.Length) { $attempts.Length + 1 }else { if ($attempts) { 2 }else { 1 } }; New-Item "$env:TEMP\BOXSTARTERATTEMPT$currentAttempt"
-        if ($currentAttempt -lt 5) {
+        if ($currentAttempt -gt 5) {
             # attempts
-            break
+            Write-Host "Tried too many times... exiting..."
+            # exit
         }
         if ((wsl --list | out-string) -eq (wsl --help | out-string)) {
             Write-Host "Attempting to install wsl2"
