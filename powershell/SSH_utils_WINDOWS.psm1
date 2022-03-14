@@ -66,13 +66,16 @@ function CreateRegisterSSHPublickeyWindows {
     cat $SSHKeyPathPublic.FullName | Out-File -Encoding ASCII -FilePath $(Get-AuthorizedKeysFilePath) | Out-Host 
     
     #Set Permissions correctly for authorized keys file https://superuser.com/a/1605117/1220772
-    $acl = Get-Acl $ENV:ProgramData\ssh\administrators_authorized_keys
-    $acl.SetAccessRuleProtection($true, $false)
-    $administratorsRule = New-Object system.security.accesscontrol.filesystemaccessrule("Administrators", "FullControl", "Allow")
-    $systemRule = New-Object system.security.accesscontrol.filesystemaccessrule("SYSTEM", "FullControl", "Allow")
-    $acl.SetAccessRule($administratorsRule)
-    $acl.SetAccessRule($systemRule)
-    $acl | Set-Acl
+    try{
+        $acl = Get-Acl $ENV:ProgramData\ssh\administrators_authorized_keys
+        $acl.SetAccessRuleProtection($true, $false)
+        $administratorsRule = New-Object system.security.accesscontrol.filesystemaccessrule("Administrators", "FullControl", "Allow")
+        $systemRule = New-Object system.security.accesscontrol.filesystemaccessrule("SYSTEM", "FullControl", "Allow")
+        $acl.SetAccessRule($administratorsRule)
+        $acl.SetAccessRule($systemRule)
+        $acl | Set-Acl
+    }
+    catch{}
     
     Restart-Service sshd | Out-Host 
     #Connect to SSH
