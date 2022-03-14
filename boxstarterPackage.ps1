@@ -18,8 +18,11 @@ while ($true) {
             choco install wsl2 --params "/Version:2 /Retry:true"
         }
         if ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
+            wsl --update
+            wsl --shutdown
             Write-Host "Attempting to install wsl-ubuntu-2004"
             choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
+            Write-Host "Waiting for distro to register..."
             while ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
                 Start-Sleep -s 1
             }
