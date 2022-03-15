@@ -22,7 +22,7 @@ while ($true) {
                 Invoke-Reboot
             }
         }
-        if ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
+        elseif ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
             wsl --update
             wsl --shutdown
             Write-Host "Attempting to install wsl-ubuntu-2004"
