@@ -1,10 +1,10 @@
 Import-Module $PSScriptRoot\WSL_utils.psm1
 Import-Module $PSScriptRoot\Powershell_utils.psm1
 function Setup-Ansible {
-    wsl '--user root apt update && apt install ansible python3-pip -y'
-    wsl 'ansible-galaxy collection install ansible.windows'
-    wsl 'ansible-galaxy collection install community.windows'
-    wsl 'ansible-galaxy collection install chocolatey.chocolatey'
+    wsl '--user root apt update && apt install ansible python3-pip ohai -y' | Write-Output
+    wsl 'ansible-galaxy collection install ansible.windows'  | Write-Output
+    wsl 'ansible-galaxy collection install community.windows'  | Write-Output
+    wsl 'ansible-galaxy collection install chocolatey.chocolatey'  | Write-Outputc
     # wsl 'pip install "pywinrm>=0.3.0"'
 }
 

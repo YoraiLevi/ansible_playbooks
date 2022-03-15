@@ -15,15 +15,16 @@ while ($true) {
         }
         if ((wsl --list | out-string) -eq (wsl --help | out-string)) {
             Write-Host "Attempting to install wsl2"
-            try{
+            try {
                 choco install wsl2 --params "/Version:2 /Retry:true"
             }
-            catch{
+            catch {
+                # If packages fails but installs anyways a restart is required
                 Invoke-Reboot
             }
         }
         elseif ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
-            wsl --update
+            wsl --update # needed to register distro
             wsl --shutdown
             Write-Host "Attempting to install wsl-ubuntu-2004"
             choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
@@ -31,6 +32,11 @@ while ($true) {
             while ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
                 Start-Sleep -s 1
             }
+        }
+        # for aesthetics make sure wsl2 is registed in chocolatey
+        elseif (-not ((choco list wsl2 --local | Out-String) -match "wsl2")) {
+            Write-Host "Making sure chocolatey has wsl2 listed"
+            choco install wsl2
         }
     }
     catch {
@@ -47,7 +53,7 @@ try {
     .\ExecutePlaybook.ps1 -playbookFile .\playbooks\theEVERYTHING.yml -inventoryFile .\playbooks\inventories\localWindowsWSL\
 }
 catch {
-    # If git is not in path, restart...
+    # git is not in path, restart...
     Invoke-Reboot 
 }
 # execute theEverything playbook
