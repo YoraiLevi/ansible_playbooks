@@ -23,20 +23,20 @@ while ($true) {
                 Invoke-Reboot
             }
         }
+        # for aesthetics make sure wsl2 is registed in chocolatey
+        elseif (-not ((choco list wsl2 --local | Out-String) -match "wsl2")) {
+            Write-Host "Making sure chocolatey has wsl2 listed"
+            choco install wsl2
+        }
         elseif ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
+            Write-Host "Attempting to install wsl-ubuntu-2004"
             wsl --update # needed to register distro
             wsl --shutdown
-            Write-Host "Attempting to install wsl-ubuntu-2004"
             choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
             Write-Host "Waiting for distro to register..."
             while ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
                 Start-Sleep -s 1
             }
-        }
-        # for aesthetics make sure wsl2 is registed in chocolatey
-        elseif (-not ((choco list wsl2 --local | Out-String) -match "wsl2")) {
-            Write-Host "Making sure chocolatey has wsl2 listed"
-            choco install wsl2
         }
     }
     catch {

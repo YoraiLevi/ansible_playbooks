@@ -4,7 +4,7 @@ function Setup-Ansible {
     wsl '--user root apt update && apt install ansible python3-pip ohai -y' | Write-Output
     wsl 'ansible-galaxy collection install ansible.windows'  | Write-Output
     wsl 'ansible-galaxy collection install community.windows'  | Write-Output
-    wsl 'ansible-galaxy collection install chocolatey.chocolatey'  | Write-Outputc
+    wsl 'ansible-galaxy collection install chocolatey.chocolatey'  | Write-Output
     # wsl 'pip install "pywinrm>=0.3.0"'
 }
 
