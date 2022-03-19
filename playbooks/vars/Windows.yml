@@ -126,7 +126,7 @@ windows_software:
       - name: "Microsoft.BingNews"
       - name: "Disney.37853FC22B2CE"
   apply_reg:
-    # install: yes
+    install: yes
     reg_edits:
       # - name: 115ScaleFactor.reg
       - name: admin_uac_password.reg
