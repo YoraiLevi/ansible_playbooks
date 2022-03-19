@@ -134,6 +134,11 @@ windows_software:
       - size: 100
   startup_programs:
     install: yes
+    win_file:
+      - path: "{{root}}/bin/TTS"
+        state: directory
+      - path: "{{root}}/bin/KeyboardRemap"
+        state: directory
     download_file:
       - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/main.exe
         dest: "{{root}}/bin/TTS/main.exe"
