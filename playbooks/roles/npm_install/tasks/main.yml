@@ -23,7 +23,7 @@
           register: pwsh_output
           changed_when: false
           when: nvm_nodejs_version is not defined or nvm_nodejs_version == 'lts'
-        - name: Installing Nodejs {{nvm_nodejs_version_1}}
+        - name: "Installing Nodejs {{nvm_nodejs_version_1}}"
           win_command: "nvm install {{nvm_nodejs_version_1}}"
           changed_when: nvm.stdout is not regex('Version ((?:\d+\.*){1,2}\d+) is already installed.')
           register: nvm
