@@ -11,18 +11,18 @@
         - name: Missing nvm, Installing...
           win_chocolatey:
             name: nvm
-        - name: upgrading nvm to 1.1.9
-          block:
-            - win_get_url:
-                url: https://github.com/coreybutler/nvm-windows/releases/download/1.1.9/nvm-update.zip
-                dest: "%temp%"
-                checksum: 9109bcd822dd1e8111410b189ab9ae26
-                checksum_algorithm: md5
-              register: _downloaded_file
-            - community.windows.win_unzip:
-                src: "%temp%/nvm-update.zip"
-                dest: "%temp%"
-            - win_command: "%temp%/nvm-update.exe 1.1.9 /s"
+        # - name: upgrading nvm to 1.1.9
+        #   block:
+        #     - win_get_url:
+        #         url: https://github.com/coreybutler/nvm-windows/releases/download/1.1.9/nvm-update.zip
+        #         dest: "%temp%"
+        #         checksum: 9109bcd822dd1e8111410b189ab9ae26
+        #         checksum_algorithm: md5
+        #       register: _downloaded_file
+        #     - community.windows.win_unzip:
+        #         src: "%temp%/nvm-update.zip"
+        #         dest: "%temp%"
+        #     - win_command: "%temp%/nvm-update.exe 1.1.9 /s"
         - win_command: "nvm root"
           changed_when: false
           register: nvm_root

@@ -14,6 +14,8 @@ windows_software:
         # IconResource: 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe,0'
       - path: "{{root}}\\Games"
         IconResource: 'C:\Windows\system32\setupapi.dll,36'
+      - path: "{{root}}\\Entertainment"
+        IconResource: 'C:\Windows\system32\wmploc.dll,91'
     win_file:
       - path: "{{root}}\\Documents\\source\\thirdparty"
         state: directory
@@ -24,8 +26,8 @@ windows_software:
       - path: "{{root}}\\VirtualMachines\\Virtual Hard Disks"
         state: directory
       # linux dirs
-      - path: "{{root}}\\bin"
-        state: directory
+      # - path: "{{root}}\\bin"
+        # state: directory
       - path: "{{root}}\\etc"
         state: directory
       - path: "{{root}}\\opt"
@@ -49,7 +51,7 @@ windows_software:
       # - name: wsl2
       # - lxrunoffline
   general_dev_tools:
-    install: yes
+    #install: yes
     choco_packages:
       # - name: wsl2
       - name: docker-desktop
@@ -59,7 +61,7 @@ windows_software:
       - name: vscode
       - name: powershell-core
   misc:
-    install: yes
+    #install: yes
     choco_packages:
       # - name: ccleaner
       # - name: files
@@ -78,7 +80,7 @@ windows_software:
       - name: office365business
         package_params: '/exclude:"Access Groove Lync OneDrive OneNote Outlook Publisher" /eula:"true"'
   misc_misc:
-    install: yes
+    #install: yes
     choco_packages:
       - name: audacity
       - name: audacity-ffmpeg
@@ -86,7 +88,7 @@ windows_software:
     - name: jre8
     - name: jdk8
   rust:
-    install: yes
+    #install: yes
     choco_packages:
       - name: cmake
       - name: cygwin
@@ -94,18 +96,18 @@ windows_software:
       - name: rust
       - name: bazel
   go:
-    install: yes
+    #install: yes
     choco_packages:
       - name: golang
   python:
-    install: yes
+    #install: yes
     python_packages:
       - name: pip --upgrade
       - name: tox
       - name: black
       - name: virtualenv
   nodejs:
-    install: no
+    install: yes
     node_modules:
       - name: npm
       - name: typescript
@@ -116,7 +118,7 @@ windows_software:
       - name: curl
       - name: wget
   store:
-    install: yes
+    #install: yes
     windows_store:
       - uri: "https://www.microsoft.com/en-us/p/dynamic-theme/9nblggh1zbkw"
       # - uri: "https://www.microsoft.com/en-us/p/roundedtb/9mtftxsj9m7f"
@@ -126,7 +128,7 @@ windows_software:
       - name: "Microsoft.BingNews"
       - name: "Disney.37853FC22B2CE"
   apply_reg:
-    install: yes
+    #install: yes
     reg_edits:
       # - name: 115ScaleFactor.reg
       - name: admin_uac_password.reg
@@ -147,11 +149,11 @@ windows_software:
       - name: Use_Dark_theme_color_for_default_app_mode_for_current_user.reg
       - name: Use_Dark_theme_color_for_default_Windows_mode_for_current_user.reg
   set_hibernate:
-    install: yes
+    #install: yes
     win_hibernate:
       - size: 100
   startup_programs:
-    install: yes
+    #install: yes
     win_file:
       - path: "{{root}}/bin/TTS"
         state: directory
