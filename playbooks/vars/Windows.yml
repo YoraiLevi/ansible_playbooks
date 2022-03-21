@@ -2,7 +2,7 @@
 root: "%userprofile%" #cmd path
 windows_software:
   root_dir_structure:
-    install: yes
+    # install: yes
     win_desktopini:
       - path: "{{root}}\\Documents\\source"
         IconResource: C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico,0
