@@ -110,6 +110,7 @@ windows_software:
     install: yes
     node_modules:
       - name: npm
+        use: yes
       - name: typescript
       - name: ts-node
       - name: eslint
