@@ -52,6 +52,8 @@ dUcK: !vault |
           3638656132346130633637616135663934346633393037626163
 dUcK_install:
   install: yes
+  choco_packages:
+    - name: curl
   win_scheduled_task:
     - name: dUcK
       run_level: highest
