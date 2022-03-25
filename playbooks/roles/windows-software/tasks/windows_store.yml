@@ -8,3 +8,6 @@
     vars:
       uri: "{{args.uri | mandatory}}"
       path: "{{args.path|default(None)}}"
+  rescue:
+    - debug:
+        msg: "{{args.uri}} failed to install"
