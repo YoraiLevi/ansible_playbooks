@@ -26,8 +26,8 @@
       else{
           Write-Output "ok"
       }
-  changed_when: '"changed" in git.output'
-  register: git
+  # changed_when: '"changed" in git.output'
+  # register: git
   vars:
     target: '[System.Environment]::ExpandEnvironmentVariables("{{root}}")'
 
