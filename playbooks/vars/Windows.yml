@@ -58,11 +58,14 @@ vagrant_home:
   win_environment:
     name: VAGRANT_HOME
     value: "{{vagrant_home_path}}"
+    level: machine
 vagrant_default_provider:
 general_dev_tools:
   install: yes
   choco_packages:
     # - name: wsl2
+    # fix ssh issues?
+    # sudo ip link set dev eth0 mtu 1300
     - name: gsudo
     - name: docker-desktop
     - name: vagrant

@@ -37,6 +37,7 @@ vagrant_default_provider:
   win_environment:
     name: VAGRANT_DEFAULT_PROVIDER
     value: "hyperv"
+    level: machine
 
 dUcK: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -63,7 +64,6 @@ dUcK_install:
             -NoProfile -Command "$output = echo url='{{dUcK}}' | curl.exe -k -K -; echo \"$(get-date -f dd-MM-yyyy_HH_mm_ss): $output\" >> /duck.log;exit $LASTEXITCODE"
       triggers:
         - type: daily
-          delay: PT2M
           start_boundary: '2020-01-01T00:00:00'
           repetition:
             interval: PT1M
