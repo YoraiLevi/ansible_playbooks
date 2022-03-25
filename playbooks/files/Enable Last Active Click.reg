@@ -1,9 +1,0 @@
-Windows Registry Editor Version 5.00
-
-; created by Walter Glenn
-; for How-To Geek
-; article: http://www.howtogeek.com/281522/how-to-make-your-taskbar-buttons-always-switch-to-the-last-active-window/
-
-[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
-"LastActiveClick"=dword:00000001
-

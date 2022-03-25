@@ -11,6 +11,8 @@ function Get-Available {
 function Get-Installed {
     $template = @'
 {version*:17.3.1}
+* {version*:16.14.2} (Currently using 64-bit executable)
+* {version*:16.14.2} (Currently using 32-bit executable)
 {version*:16.13.2}
 '@
     $installed = ((nvm list).trim()) | ConvertFrom-String -TemplateContent $template

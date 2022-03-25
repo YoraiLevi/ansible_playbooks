@@ -1,7 +1,2 @@
-windows_software_test:
-  docker_wsl_packages:
-    # install: yes
-    choco_packages:
-      # - wsl-ubuntu-2004
-      - name: docker-desktop
-      # - name: wsl2
+_full_name: "Yorai Levi"
+_email: "yorai.email@gmail.com"

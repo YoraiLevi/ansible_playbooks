@@ -1,0 +1,3 @@
+- block:
+  - name: Setting environment variables "{{args}}"
+    win_environment: "{{args}}"

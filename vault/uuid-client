@@ -1,0 +1,2 @@
+#!/bin/bash
+echo $(powershell.exe -NoProfile -Command "get-wmiobject Win32_ComputerSystemProduct  | Select-Object -ExpandProperty UUID")

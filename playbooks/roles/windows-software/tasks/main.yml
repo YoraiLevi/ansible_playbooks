@@ -1,12 +1,13 @@
+- set_fact: windows_software="{{lookup('vars', 'vars') | json_query('*|[?install]') }}"
 - block:
-        # debug:
-            # msg: "name {{item.task}} args: {{item.args}}"
+    #   - debug:
+        #   msg: "name {{item.task}} args: {{item.args}}"
       - include_tasks: "{{item.task}}.yml"
         vars:
             args: "{{item.args}}"
         loop: "{{tasks}}"
   vars:
-      tasks: "[{% set a = windows_software | json_query('*|[?install]') %}
+      tasks: "[{% set a = windows_software %}
           {% for task_block in a%}
           {% for task_list_title,task_list in task_block.items() %}
           {% if task_list is iterable and (task_list is not string and task_list is not mapping) %}
@@ -16,9 +17,6 @@
           {% endif %}
           {% endfor %}
           {% endfor %}]"
-
-
-          
 # - block:
 #     - name: Apply registry modifications
 #       include_role:

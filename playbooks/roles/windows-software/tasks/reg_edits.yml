@@ -2,9 +2,12 @@
   # - name: Apply registry modifications
   #   debug:
   #     msg: "{{args}}"
-  - name: Apply registry modifications
+  - name: "Apply registry modifications: {{args.name}}"
     include_role:
       name: win_reg_file
     vars:
       file_contents: "{{item}}"
     with_file: "{{args.name}}"
+    # - name: "Apply registry modifications: {{args.name}}"
+    #   win_regmerge:
+    #     path: "{{args.name}}"

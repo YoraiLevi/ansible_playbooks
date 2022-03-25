@@ -1,5 +1,5 @@
 #https://stackoverflow.com/questions/70254096/system-io-fileinfo-and-relative-paths
-Import-Module $PSScriptRoot\CMD_utils.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\CMD_utils.psm1
 
 function isWSLInstalled {
     return -Not [string]::IsNullOrEmpty($(Get-WSLExe))
@@ -75,7 +75,7 @@ function wsl {
                 #https://stackoverflow.com/a/60386296/12603110
                 $psCommand = "$(WSLExe) $($command.Split())"
                 $cmdCommand = Convert-StringCMD $psCommand
-                cmd.exe /c $cmdCommand" 2>&1" | ForEach-Object { $_ -join ('') } | Tee-Object -Variable output | ForEach-Object { $_ -replace [char]0, '' } | ForEach-Object { $_.trimend() } | ForEach-Object { $_ -replace "`r?`n", "`r`n" } | ForEach-Object { Write-Output "$_"; }
+                cmd.exe /c $cmdCommand" 2>&1" | ForEach-Object { $_ -join ('') } | ForEach-Object { $_ -replace [char]0, '' } | ForEach-Object { $_.trimend() } | ForEach-Object { $_ -replace "`r?`n", "`r`n" }  | Tee-Object -Variable output | ForEach-Object { Write-Output "$_"; }
             # }
         }
         catch { $_ | Format-List * -Force | Out-String }
@@ -125,20 +125,20 @@ function isWSLDistroInstalled {
     # return $list.IndexOf($Distro, [System.StringComparison]::CurrentCultureIgnoreCase) -ge 0
     
 }
-function InstallWSL {
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    choco install wsl2 -y
-    choco install wsl-ubuntu-2004 -y
-}
-function InstallWSLDistro {
-    param([string]$Distro = 'Ubuntu-20.04')
-    if (isWSLInstalled -eq $false) { return }
+# function InstallWSL {
+    # Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    # choco install wsl2 -y
+    # choco install wsl-ubuntu-2004 -y
+# }
+# function InstallWSLDistro {
+    # param([string]$Distro = 'Ubuntu-20.04')
+    # if (isWSLInstalled -eq $false) { return }
 
     #    wsl "--install"
     #    wsl "--update"
     #    wsl "--shutdown"
     #    wsl "--install -d $Distro"
-}
+# }
 #https://devblogs.microsoft.com/commandline/integrate-linux-commands-into-windows-with-powershell-and-the-windows-subsystem-for-linux/
 #Connect to SSH
 #ssh `$win_ip4 -i ~/.ssh/$((Get-ChildItem $SSHKeyPathPrivate).name) -o StrictHostKeyChecking=no exit;

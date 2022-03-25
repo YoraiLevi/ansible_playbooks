@@ -28,7 +28,7 @@ else {
     }
     else {
         #Is not symlink
-        Rename-Item -Path $Path -NewName ($item.Name + ".old" + "_" + $(get-date -f MM-dd-yyyy_HH_mm_ss))
+        Rename-Item -Path $Path -NewName ($item.Name + ".old" + "_" + $(get-date -f dd-MM-yyyy_HH_mm_ss))
         New-Item -Type SymbolicLink -Target $Target -Path $Path
         if ($Move) {
             Write-Output "moving files"

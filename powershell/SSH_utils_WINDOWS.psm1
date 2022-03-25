@@ -1,4 +1,4 @@
-Import-Module $PSScriptRoot\ElevateScript.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\ElevateScript.psm1
 function SetupAndStartSSHWindows {
     $ErrorActionPreference = 'Stop'
     try {

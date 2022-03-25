@@ -1,4 +1,4 @@
-Import-Module $PSScriptRoot\WSL_utils.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\WSL_utils.psm1
 function SetupAndStartSSHWSL{
     param([string]$Distro = "Ubuntu-20.04")
 }

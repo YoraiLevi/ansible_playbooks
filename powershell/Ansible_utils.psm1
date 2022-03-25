@@ -1,5 +1,5 @@
-Import-Module $PSScriptRoot\WSL_utils.psm1
-Import-Module $PSScriptRoot\Powershell_utils.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\WSL_utils.psm1
+Import-Module -DisableNameChecking $PSScriptRoot\Powershell_utils.psm1
 function Setup-Ansible {
     wsl '--user root apt update && apt install ansible python3-pip ohai -y' #setup module can use ohai.
     wsl 'ansible-galaxy collection install ansible.windows'
@@ -14,54 +14,15 @@ function Execute-Playbook {
         #[ValidatePattern('"')]
         [string]$keyFile,
         [string]$inventoryFile,
+        [string]$vault_id,
         [switch]$v = $false
     )
     $playbookFile = Normalize-Path $playbookFile
     $keyFile = Normalize-Path $keyFile
     $inventoryFile = Normalize-Path $inventoryFile
    
-    ExecutePlaybookLocalWindows -playbookFile $playbookFile  -keyFile $keyFile -inventoryFile $inventoryFile -v:$v.IsPresent
+    ExecutePlaybookLocalWindows -playbookFile $playbookFile -keyFile $keyFile -vault_id $vault_id -inventoryFile $inventoryFile -v:$v.IsPresent
 }
-#https://www.google.com/search?q=check+if+ip+is+localhost&oq=check+if+ip+is+localnhost&aqs=edge.1.69i57j0i22i30l4.4351j0j1&sourceid=chrome&ie=UTF-8
-# function ExecutePlaybookLocalWindows {
-#     param([System.IO.FileInfo]$playbookFile,
-#         #[ValidatePattern('"')] "^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)(\.(?!$)|$)){4}$"
-#         [string]$address,
-#         [System.IO.FileInfo]$keyFile,
-#         [System.IO.FileInfo]$inventoryFile,
-#         [string]$extra_vars,
-#         [switch]$v
-          
-#     )
-#     if ((Is-NullOrEmpty $inventoryFile) -eq $false){
-#         $i = "-i"
-#         Write-Host "YAY"
-#     }
-#     else{
-#         Write-Host "NEY"
-#     }
-#     if ($v.IsPresent -eq $true) {
-#         $vvv = '-vvv'
-#     }
-#     $playbookPath = $playbookFile.FullName
-#     $keyFileName = $keyFile.BaseName
-#     $command =
-#     @"
-# ansible-playbook $vvv $i $inventoryFile $playbookPath --extra-vars 'winlocal_ssh_private_key_file=~/.ssh/$keyFileName $extra_vars';
-# "@
-#     wsl $command
-# }
-
-#dynamic inventory
-#ansible-playbook -i inventories/localWindowsWSL /mnt/c/Users/devic/Documents/Sources/etc/Ansible/playbooks/ping.yml --extra-vars 'ansible_ssh_private_key_file=/home/user/.ssh/id_ed25519_SSHKey'
-# --ssh-common-args='-o StrictHostKeyChecking=no'
-#ansible-playbook -i playbooks/inventories/localWindowsWSL/ /mnt/c/Users/devic/Documents/Sources/etc/Ansible/playbooks/ping.yml --extra-vars 'ansible_ssh_private_key_file=/home/user/.ssh/id_ed25519_SSHKey' --ssh-common-args='-o StrictHostKeyChecking=no'
-#bash -c "ansible-playbook ping.yml -i inventories/personal --extra-vars 'ansible_ssh_private_key_file=~/.ssh/$((Get-ChildItem $SSHKeyPathPrivate).name)'"
-
-
-
-
-
 
 function ExecutePlaybookLocalWindows {
     param([Parameter(Mandatory=$true)][System.IO.FileInfo]$playbookFile,
@@ -69,6 +30,7 @@ function ExecutePlaybookLocalWindows {
         [System.IO.FileInfo]$keyFile,
         [System.IO.FileInfo]$inventoryFile,
         [string]$extra_vars,
+        [string]$vault_id,
         [switch]$v
           
     )
@@ -83,12 +45,15 @@ function ExecutePlaybookLocalWindows {
     if ((Is-NullOrEmpty $inventoryFile) -eq $false){
         $i = "-i"
     }
+    if ((Is-NullOrEmpty $vault_id) -eq $false){
+        $vault_id = "--vault-id '$vault_id'"
+    }
     if ($v.IsPresent -eq $true) {
         $vvv = '-vvvvv'
     }
     $command =
     @"
-ansible-playbook $vvv $i $inventoryFile $playbookPath $extra_vars;
+ansible-playbook $vvv $i $inventoryFile $playbookPath $vault_id $extra_vars;
 "@
     wsl $command
 }
