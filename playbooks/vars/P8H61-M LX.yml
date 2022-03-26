@@ -1,5 +1,9 @@
 ---
 root: "D:" #cmd path
+enable_ps2_keyboard:
+  install: yes
+  reg_edits:
+      - name: ps2kb.reg
 _move_folders:
   install: yes
   win_knownfolders:
@@ -35,9 +39,9 @@ game_dev:
     - name: unity
 vagrant_default_provider:
   win_environment:
-    name: VAGRANT_DEFAULT_PROVIDER
-    value: "hyperv"
-    level: machine
+    - name: VAGRANT_DEFAULT_PROVIDER
+      value: "hyperv"
+      level: machine
 
 dUcK: !vault |
           $ANSIBLE_VAULT;1.1;AES256

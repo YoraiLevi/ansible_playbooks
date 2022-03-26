@@ -56,9 +56,9 @@ vagrant_home_path: "{{root}}\\VirtualMachines\\.vagrant.d"
 vagrant_home:
   install: yes
   win_environment:
-    name: VAGRANT_HOME
-    value: "{{vagrant_home_path}}"
-    level: machine
+    - name: VAGRANT_HOME
+      value: "{{vagrant_home_path}}"
+      level: machine
 vagrant_default_provider:
 general_dev_tools:
   install: yes
@@ -82,14 +82,12 @@ general_dev_tools:
 misc:
   install: yes
   choco_packages:
-    # - name: ccleaner
-    # - name: files
     - name: 7zip
     - name: autohotkey
     - name: Everything
     - name: vlc
     - name: Recuva
-    # - name: windirstat
+    - name: mousewithoutborders 
     - name: wizTree
     - name: discord
     - name: zoom
