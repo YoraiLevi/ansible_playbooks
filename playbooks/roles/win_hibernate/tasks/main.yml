@@ -1,24 +1,24 @@
 ---
-# tasks file for 
+# tasks file for
 - block:
-  - ansible.windows.win_powershell:
-      script: |
-        # 'Reliably' https://www.intowindows.com/can-i-move-the-hiberfil-sys-hibernation-file-in-windows-10/ 
-        $before = Get-ChildItem \ -Force | ? {$_.Name -like 'hiberfil.sys'} | select -Property Length
-        POWERCFG /HIBERNATE /SIZE {{size}} # /TYPE {{type}}
-        $after = Get-ChildItem \ -Force | ? {$_.Name -like 'hiberfil.sys'} | select -Property Length
-        if($before.length -ne $after.length){
-          Write-Output "changed"
-        }
-        else{
-          Write-Output "ok"
-        }
-        # close lid action: hibernate
-        powercfg -setdcvalueindex SCHEME_CURRENT 4f971e89-eebd-4455-a8de-9e59040e7347 5ca83367-6e45-459f-a27b-476b1d01c936 2 
-        # always battery saver
-        powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 100
-    changed_when: '"changed" in pwsh.output'
-    register: pwsh
+    - ansible.windows.win_powershell:
+        script: |
+          # 'Reliably' https://www.intowindows.com/can-i-move-the-hiberfil-sys-hibernation-file-in-windows-10/ 
+          $before = Get-ChildItem \ -Force | ? {$_.Name -like 'hiberfil.sys'} | select -Property Length
+          POWERCFG /HIBERNATE /SIZE {{size}} # /TYPE {{type}}
+          $after = Get-ChildItem \ -Force | ? {$_.Name -like 'hiberfil.sys'} | select -Property Length
+          if($before.length -ne $after.length){
+            Write-Output "changed"
+          }
+          else{
+            Write-Output "ok"
+          }
+          # close lid action: hibernate
+          powercfg -setdcvalueindex SCHEME_CURRENT 4f971e89-eebd-4455-a8de-9e59040e7347 5ca83367-6e45-459f-a27b-476b1d01c936 2 
+          # always battery saver
+          powercfg /setdcvalueindex SCHEME_CURRENT SUB_ENERGYSAVER ESBATTTHRESHOLD 100
+      changed_when: '"changed" in pwsh.output'
+      register: pwsh
 
   vars:
     # on: "{{yes|bool}}"

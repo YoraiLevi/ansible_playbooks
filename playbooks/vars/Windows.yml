@@ -4,7 +4,7 @@ root_dir_structure:
   install: yes
   win_path:
     - elements:
-      - "{{root}}\\bin"
+        - "{{root}}\\bin"
   win_desktopini:
     - path: "{{root}}\\Documents\\source"
       IconResource: C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico,0
@@ -13,7 +13,7 @@ root_dir_structure:
     - path: "{{root}}\\bin"
       IconResource: 'C:\WINDOWS\System32\SHELL32.dll,314'
     # - path: "D:/etc/microsoft/edge"
-      # IconResource: 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe,0'
+    # IconResource: 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe,0'
     - path: "{{root}}\\Games"
       IconResource: 'C:\Windows\system32\setupapi.dll,36'
     - path: "{{root}}\\Entertainment"
@@ -29,35 +29,36 @@ root_dir_structure:
       state: directory
     # linux dirs
     # - path: "{{root}}\\bin"
-      # state: directory
-    - path: "{{root}}\\etc"
+    # state: directory
+    - path: "{{root}}\\etc" #
       state: directory
-    - path: "{{root}}\\opt"
+    - path: "{{root}}\\opt" #Aka program files
       state: directory
     # - dest: run
-      # state: directory
+    # state: directory
     # - dest: sbin
-      # state: directory
+    # state: directory
     # - dest: snap
-      # state: directory
+    # state: directory
     # - dest: srv
-      # state: directory
+    # state: directory
     # - dest: sys
-      # state: directory
-    # - path: var
-      # state: directory
+    # state: directory
+    - path: "{{root}}\\var"
+      state: directory
+    - path: "{{root}}\\var\\log"
+      state: directory
 wsl_packages:
   install: yes
   choco_packages:
     - name: wsl-ubuntu-2004
     - name: wsl2
     # - lxrunoffline
-vagrant_home_path: "{{root}}\\VirtualMachines\\.vagrant.d"
 vagrant_home:
   install: yes
   win_environment:
     - name: VAGRANT_HOME
-      value: "{{vagrant_home_path}}"
+      value: "{{root}}\\VirtualMachines\\.vagrant.d"
       level: machine
 vagrant_default_provider:
 general_dev_tools:
@@ -75,10 +76,9 @@ general_dev_tools:
     - name: poshgit
     - name: powershell-core
   include_task:
-    - file: configs.yml
-  # Update-Help -Verbose -Force -ErrorAction SilentlyContinue
-  # Set-ExeccutionPolicy
-  # git config
+    - file: git_config.yml
+    - file: wsl2.yml
+    - file: consoles_config.yml
 misc:
   install: yes
   choco_packages:
@@ -87,7 +87,7 @@ misc:
     - name: Everything
     - name: vlc
     - name: Recuva
-    - name: mousewithoutborders 
+    - name: mousewithoutborders
     - name: wizTree
     - name: discord
     - name: zoom
@@ -201,50 +201,45 @@ ahk_remapper:
       state: directory
   download_file:
     - url: "{{ahk_remapper_url}}"
-      dest:  "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
+      dest: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
   win_scheduled_task:
     - name: Remap Keys
       run_level: highest
       actions:
-      - path: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
+        - path: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
       triggers:
         - type: logon
-
-
-# task_scheduler history
-# wevtutil get-log Microsoft-Windows-TaskScheduler/Operational
-
 # - path: "$ENV:USERPROFILE/.vscode"
-  # target: "D:/etc/.vscode"
-  # processes:
-    # - code
+# target: "D:/etc/.vscode"
+# processes:
+# - code
 # - path: "$ENV:USERPROFILE/.gitconfig"
-  # target: "D:/etc/.gitconfig"
-  # processes:
-    # - git
-  # file: yes
+# target: "D:/etc/.gitconfig"
+# processes:
+# - git
+# file: yes
 # - path: >-
-    # $ENV:USERPROFILE/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
-  # target: "D:/etc/windows-terminal/settings.json"
-  # processes:
-    # - WindowsTerminal
-  # file: yes
-  #etc folders
+# $ENV:USERPROFILE/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
+# target: "D:/etc/windows-terminal/settings.json"
+# processes:
+# - WindowsTerminal
+# file: yes
+#etc folders
 # - path: "$ENV:USERPROFILE/AppData/Local/Microsoft/Edge/User Data"
-  # target: "D:/etc/microsoft/edge/User Data"
-  # processes:
-    # - msedge
+# target: "D:/etc/microsoft/edge/User Data"
+# processes:
+# - msedge
 # This creates a bug when restoring checkpoints in hyper v
 # - path: "C:/Users/Public/Documents/Hyper-V/Virtual Hard Disks"
 #   target: "D:/VirtualMachines/Hyper-V/Virtual Hard Disks"
 # - path: "C:/ProgramData/Microsoft/Windows/Hyper-V"
 #   target: "D:/VirtualMachines/Hyper-V"
 
-    # https://windowsloop.com/enable-developer-mode-windows-10/
-  # https://github.com/evilC/AutoHotInterception
-  # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | %{ Remove-PartitionAccessPath -DiskNumber $_.DiskNumber -PartitionNumber $_.PartitionNumber -AccessPath "$($_.DriveLetter):"}
-  # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | Add-PartitionAccessPath -AccessPath C:\FileHistory\
-  # netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes
+# https://windowsloop.com/enable-developer-mode-windows-10/
+# https://github.com/evilC/AutoHotInterception
+# Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | %{ Remove-PartitionAccessPath -DiskNumber $_.DiskNumber -PartitionNumber $_.PartitionNumber -AccessPath "$($_.DriveLetter):"}
+# Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | Add-PartitionAccessPath -AccessPath C:\FileHistory\
+# netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes
 # https://superuser.com/questions/1044050/configuring-windows-8-8-1-10-file-history-via-command-line
 # http://blog.bitcollectors.com/adam/2017/07/file-history-command-line-tool/
 #   # set region of windows

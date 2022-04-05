@@ -25,7 +25,7 @@ while ($true) {
             }
         }
         elseif ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
-            # for aesthetics make sure wsl2 is registed in chocolatey
+            # for aesthetics make sure wsl2 is registered in chocolatey
             Write-Host "Making sure chocolatey has wsl2 listed"
             choco install wsl2
             Write-Host "Attempting to install wsl-ubuntu-2004"

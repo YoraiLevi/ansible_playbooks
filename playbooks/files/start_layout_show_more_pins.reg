@@ -1,0 +1,9 @@
+﻿Windows Registry Editor Version 5.00
+
+; Created by: Shawn Brink
+; Created on: December 2, 2021
+; Tutorial: https://www.elevenforum.com/t/change-start-layout-to-show-more-pins-or-more-recommendations-in-windows-11.3148/
+
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"Start_Layout"=dword:00000001

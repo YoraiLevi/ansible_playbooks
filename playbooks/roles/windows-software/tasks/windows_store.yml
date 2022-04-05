@@ -1,13 +1,13 @@
 - block:
-  # - name: Install Windows store application
-  #   debug:
-  #     msg: "{{args}}"
-  - name: Install Windows store application
-    include_role:
-      name: store_install
-    vars:
-      uri: "{{args.uri | mandatory}}"
-      path: "{{args.path|default(None)}}"
+    # - name: Install Windows store application
+    #   debug:
+    #     msg: "{{args}}"
+    - name: Install Windows store application
+      include_role:
+        name: store_install
+      vars:
+        uri: "{{args.uri | mandatory}}"
+        path: "{{args.path|default(None)}}"
   rescue:
     - debug:
         msg: "{{args.uri}} failed to install"

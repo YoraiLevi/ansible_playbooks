@@ -1,70 +1,70 @@
 - block:
-  - ansible.windows.win_powershell:
-      script: |
-        $ErrorActionPreference = 'Stop'
+    - ansible.windows.win_powershell:
+        script: |
+          $ErrorActionPreference = 'Stop'
 
-        function Normalize-Path{
-        param([string]$path)
-        if($path.StartsWith("~")){
-            r = [regex]"~\\|~/"
-            $path = $r.Replace($path,$env:USERPROFILE,1)
-        }
-        if($false -eq [System.IO.Path]::IsPathRooted($path)){
-            $path = "$PWD/$path"
-        }
-        return [IO.Path]::GetFullPath($path)
-        }
+          function Normalize-Path{
+          param([string]$path)
+          if($path.StartsWith("~")){
+              r = [regex]"~\\|~/"
+              $path = $r.Replace($path,$env:USERPROFILE,1)
+          }
+          if($false -eq [System.IO.Path]::IsPathRooted($path)){
+              $path = "$PWD/$path"
+          }
+          return [IO.Path]::GetFullPath($path)
+          }
 
 
-        {{knownfolderpath_ps1}}
-        $KnownFolder = "{{_knownFolder}}"
-        $Target =  "$({{target}})"
-        $null = mkdir $Target -Force # Make sure target exists...
+          {{knownfolderpath_ps1}}
+          $KnownFolder = "{{_knownFolder}}"
+          $Target =  "$({{target}})"
+          $null = mkdir $Target -Force # Make sure target exists...
 
-        $Target=(resolve-path $Target).path.TrimEnd('\') 
-        $Path="" #CurrentPath
-        if((Get-KnownFolderPath $KnownFolder ([ref]$Path)) -eq 0){
-            if((join-path (resolve-path $Path).path '') -eq (join-path (resolve-path $Target).path '')){
-                    $changed = $false
-                #are path and target already equal?
-                # throw "$KnownFolder already at destination, nothing done."
-            }
-            else{
-              $newPath="" #CurrentPath
-              if((Set-KnownFolderPath $KnownFolder $Target) -eq 0){
-                  $code = Get-KnownFolderPath $KnownFolder ([ref]$newPath)
-                  if((join-path (resolve-path $newPath).path '') -eq (join-path (resolve-path $Target).path '')){
-                      attrib +r $Target
-                      try{
-                      Copy-Item (join-path $Path desktop.ini) $Target;
-                      }
-                      catch{}
-                      $changed = $true
-                  }
-                  else{
-                      throw "$KnownFolder path was reported changed but mismatches:
-                      "+(join-path (resolve-path $newPath).path '')+"
-                      "+(join-path (resolve-path $Target).path '')
-                  }
+          $Target=(resolve-path $Target).path.TrimEnd('\') 
+          $Path="" #CurrentPath
+          if((Get-KnownFolderPath $KnownFolder ([ref]$Path)) -eq 0){
+              if((join-path (resolve-path $Path).path '') -eq (join-path (resolve-path $Target).path '')){
+                      $changed = $false
+                  #are path and target already equal?
+                  # throw "$KnownFolder already at destination, nothing done."
               }
               else{
-                  Set-KnownFolderPath $KnownFolder $Path #Undo if something was changed?
-                  throw "Failed to change $KnownFolder"
+                $newPath="" #CurrentPath
+                if((Set-KnownFolderPath $KnownFolder $Target) -eq 0){
+                    $code = Get-KnownFolderPath $KnownFolder ([ref]$newPath)
+                    if((join-path (resolve-path $newPath).path '') -eq (join-path (resolve-path $Target).path '')){
+                        attrib +r $Target
+                        try{
+                        Copy-Item (join-path $Path desktop.ini) $Target;
+                        }
+                        catch{}
+                        $changed = $true
+                    }
+                    else{
+                        throw "$KnownFolder path was reported changed but mismatches:
+                        "+(join-path (resolve-path $newPath).path '')+"
+                        "+(join-path (resolve-path $Target).path '')
+                    }
+                }
+                else{
+                    Set-KnownFolderPath $KnownFolder $Path #Undo if something was changed?
+                    throw "Failed to change $KnownFolder"
+                }
               }
-            }
-        }
-        else{
-          throw "Couldn't get current $KnownFolder path"
-        }
-        if($changed -eq $true){
-            Write-Output "changed"
-            cmd.exe /c "taskkill /im explorer.exe /f && start explorer.exe"
-        }
-        else{
-            Write-Output "ok"
-        }
-    register: pwsh
-    changed_when: '"changed" in pwsh.output'
+          }
+          else{
+            throw "Couldn't get current $KnownFolder path"
+          }
+          if($changed -eq $true){
+              Write-Output "changed"
+              cmd.exe /c "taskkill /im explorer.exe /f && start explorer.exe"
+          }
+          else{
+              Write-Output "ok"
+          }
+      register: pwsh
+      changed_when: '"changed" in pwsh.output'
   vars:
     _knownFolder: "{{ knownFolder | mandatory }}"
     target: '[System.Environment]::ExpandEnvironmentVariables("{{path|mandatory}}")'
@@ -109,7 +109,7 @@
 #       # loop_var: folder
 #     # loop: "{{folders_structure | selectattr('desktopini', 'defined') | list }}"
 
-    # _symlink_substitute: "{{symlink_substitute | default(false)}}"
+# _symlink_substitute: "{{symlink_substitute | default(false)}}"
 #     folders_structure:
 #     # folders:
 #       - target: "{{_dest}}"

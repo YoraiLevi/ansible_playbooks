@@ -16,7 +16,7 @@ function wsl {
     #TODO Optimize args preprocessing
     #TODO make bash multiline \ work.
     #TODO Add whatif and confirm
-    #TODO continous std out rather than at end
+    #TODO continuous std out rather than at end
     $WSLExe = Get-WSLExe
     $args | %{Write-Information $_}
     $args = ($args -join ' ').split()

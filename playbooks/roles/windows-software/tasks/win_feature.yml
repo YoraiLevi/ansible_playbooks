@@ -1,0 +1,7 @@
+- block:
+    - name: Enabling windows feature "{{args.url}}"
+      win_feature: "{{args}}"
+      register: win_feature
+    - name: Reboot if installing feature requires it
+      win_reboot:
+      when: win_feature.reboot_required

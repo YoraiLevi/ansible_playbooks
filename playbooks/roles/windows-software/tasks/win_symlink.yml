@@ -1,10 +1,9 @@
 - block:
-  - name: Create symlink 
-    include_role:
-      name: win_symlink
-    vars:
-      path: "{{args.path | mandatory}}"
-      target: "{{args.target | mandatory}}"
-    # debug:
+    - name: Create symlink
+      include_role:
+        name: win_symlink
+      vars:
+        path: "{{args.path | mandatory}}"
+        target: "{{args.target | mandatory}}"
+      # debug:
       # msg: "{{args}}"
-    

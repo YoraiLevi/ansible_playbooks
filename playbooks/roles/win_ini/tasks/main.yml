@@ -1,22 +1,22 @@
 ---
 # tasks file for win_ini
 - block:
-  - name: "Write ini file: {{ini_path}}"
-    ansible.windows.win_powershell:
-      script: |
-        {{ini_utils_ps1}}
-        $TargetPath =  "$({{ini_path_resolved}})"
-        $obj = '{{ini_json}}' | ConvertFrom-Json # -AsHashTable # PS>6
-        $Hashtable =  Convert-ObjectToHashTable $obj
-        $changed = Merge-Ini -filePath $TargetPath -hashtable $Hashtable 
-        if($changed -eq $true){
-            Write-Output "changed"
-        }
-        else{
-            Write-Output "ok"
-        }
-    register: pwsh
-    changed_when: '"changed" in pwsh.output'
+    - name: "Write ini file: {{ini_path}}"
+      ansible.windows.win_powershell:
+        script: |
+          {{ini_utils_ps1}}
+          $TargetPath =  "$({{ini_path_resolved}})"
+          $obj = '{{ini_json}}' | ConvertFrom-Json # -AsHashTable # PS>6
+          $Hashtable =  Convert-ObjectToHashTable $obj
+          $changed = Merge-Ini -filePath $TargetPath -hashtable $Hashtable 
+          if($changed -eq $true){
+              Write-Output "changed"
+          }
+          else{
+              Write-Output "ok"
+          }
+      register: pwsh
+      changed_when: '"changed" in pwsh.output'
   vars:
     ini_json: "{{ini | mandatory | to_json }}"
     ini_path: "{{path | mandatory}}"

@@ -1,5 +1,5 @@
 - block:
-  - name: "Include task {{args.file}}"
-    include_tasks:
-      file: "{{args.file | mandatory}}"
-      # apply: "{{args.apply | default(omit,true)}}"
+    - name: "Include task {{args.file}}"
+      include_tasks:
+        file: "{{args.file | mandatory}}"
+        # apply: "{{args.apply | default(omit,true)}}"

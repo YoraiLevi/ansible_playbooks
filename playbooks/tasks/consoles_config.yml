@@ -1,0 +1,11 @@
+- name: update-help powershell
+  win_shell: "Update-Help -ErrorAction SilentlyContinue -Force;exit 0"
+  register: powershell
+  changed_when: false
+- name: update-help powershell-core
+  win_shell: "Update-Help -ErrorAction SilentlyContinue -Force;exit 0"
+  args:
+    executable: pwsh
+  register: pwsh
+  changed_when: false
+# Set-ExeccutionPolicy

@@ -1,0 +1,37 @@
+- name: config git correctly
+  ansible.windows.win_powershell:
+    script: |
+      $Target =  "$({{target}})"
+      # cool alias
+      # https://stackoverflow.com/a/6515662/12603110
+      #USER
+      git config --global user.name "{{_full_name}}"
+      git config --global user.email "{{_email}}"
+
+      #CORE
+      git config --global core.autocrlf false
+      git config --global core.editor "code --wait"
+      git config --global core.eof lf
+      # https://about.gitlab.com/blog/2020/04/07/15-git-tips-improve-workflow/
+      git config --global core.excludesFile $(Join-Path $Target /.gitignore)
+
+      #REBASE
+      git config --global rebase.autosquash true
+
+      #HELP
+      git config --global help.autocorrect "prompt"
+
+      #ALIAS
+      git config --global alias.logg 'log --graph --decorate --oneline --all'
+
+      if($changed -eq $true){
+        Write-Output "changed"
+      }
+      else{
+          Write-Output "ok"
+      }
+  changed_when: false
+  # changed_when: '"changed" in git.output'
+  # register: git
+  vars:
+    target: '[System.Environment]::ExpandEnvironmentVariables("{{root}}")'

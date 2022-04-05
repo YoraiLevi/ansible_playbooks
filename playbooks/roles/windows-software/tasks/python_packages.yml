@@ -1,10 +1,10 @@
 - block:
-  # - name: Install python packages
-  #   debug:
-  #     msg: "{{args}}"
-  - name: Install python packages
-    include_role:
-      name: pip_install
-    vars:
-      pip_args: "{{args.name | mandatory}}"
-      python_version: "{{args.python_version|default(None)}}"
+    # - name: Install python packages
+    #   debug:
+    #     msg: "{{args}}"
+    - name: Install python packages
+      include_role:
+        name: pip_install
+      vars:
+        pip_args: "{{args.name | mandatory}}"
+        python_version: "{{args.python_version|default(None)}}"

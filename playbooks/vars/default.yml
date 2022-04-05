@@ -1,2 +1,3 @@
 _full_name: "Yorai Levi"
 _email: "yorai.email@gmail.com"
+_powershell_date: $(date -f 'yyyy-MM-dd HH:mm:ss')

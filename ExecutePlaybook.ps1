@@ -17,7 +17,7 @@ $ErrorActionPreference = 'Stop'
 # $winIP = Get-WinIP
 # $address = "$ENV:USERNAME@$winIP"
 if ((Is-NullOrEmpty $keyFilePath) -eq $true) {
-    $keyFile = .\Setup.ps1
+    $keyFile = &$PSScriptRoot\Setup.ps1
 }
 else {
     $keyFile = $keyFilePath
@@ -25,5 +25,5 @@ else {
 #Setup-Ansible
 Execute-Playbook -playbookFile $playbookFile -keyFile $keyFile -inventoryFile $inventoryFile -vault_id $vault_id -v:$v.IsPresent
 if ((Is-NullOrEmpty $keyFilePath) -eq $true) {
-    .\Cleanup.ps1
+    &$PSScriptRoot\Cleanup.ps1
 }

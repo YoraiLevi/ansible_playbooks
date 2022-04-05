@@ -7,7 +7,7 @@
           allow_hard_terminate: yes
           start_when_available: yes
           execution_time_limit: PT0S #inf
-          wake_to_run: no 
+          wake_to_run: no
           disallow_start_if_on_batteries: no
           stop_if_going_on_batteries: no
           run_only_if_idle: no

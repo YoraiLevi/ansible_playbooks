@@ -1,2 +1,2 @@
 - block:
-   - ansible.windows.win_file: "{{args}}"
+    - ansible.windows.win_file: "{{args}}"

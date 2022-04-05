@@ -1,33 +1,33 @@
 - block:
-  - ansible.windows.win_powershell:
-      script: |
-        $ErrorActionPreference = 'Stop'
+    - ansible.windows.win_powershell:
+        script: |
+          $ErrorActionPreference = 'Stop'
 
-        function Normalize-Path{
-        param([string]$path)
-        if($path.StartsWith("~")){
-            r = [regex]"~\\|~/"
-            $path = $r.Replace($path,$env:USERPROFILE,1)
-        }
-        if($false -eq [System.IO.Path]::IsPathRooted($path)){
-            $path = "$PWD/$path"
-        }
-        return [IO.Path]::GetFullPath($path)
-        }
+          function Normalize-Path{
+          param([string]$path)
+          if($path.StartsWith("~")){
+              r = [regex]"~\\|~/"
+              $path = $r.Replace($path,$env:USERPROFILE,1)
+          }
+          if($false -eq [System.IO.Path]::IsPathRooted($path)){
+              $path = "$PWD/$path"
+          }
+          return [IO.Path]::GetFullPath($path)
+          }
 
 
-        $Target =  "$({{_target}})"
-        $Path =  "$({{_path}})"
-        {{replace_softLink_ps1}}
-        
-        # if($changed -eq $true){
-        #     Write-Output "changed"
-        # }
-        # else{
-        #     Write-Output "ok"
-        # }
-    register: pwsh
-    changed_when: '"changed" in pwsh.output'
+          $Target =  "$({{_target}})"
+          $Path =  "$({{_path}})"
+          {{replace_softLink_ps1}}
+
+          # if($changed -eq $true){
+          #     Write-Output "changed"
+          # }
+          # else{
+          #     Write-Output "ok"
+          # }
+      register: pwsh
+      changed_when: '"changed" in pwsh.output'
   vars:
     _target: '[System.Environment]::ExpandEnvironmentVariables("{{target|mandatory}}")'
     _path: '[System.Environment]::ExpandEnvironmentVariables("{{path|mandatory}}")'

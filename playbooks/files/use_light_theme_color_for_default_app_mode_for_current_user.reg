@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+; Created by: Shawn Brink
+; Created on: September 15th 2015
+; Tutorial: https://www.tenforums.com/tutorials/24038-change-default-app-mode-light-dark-theme-windows-10-a.html
+
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]
+"AppsUseLightTheme"=dword:00000001
+
+
+

@@ -1,46 +1,46 @@
 - block:
-  # - name: Write ini files
+    # - name: Write ini files
     # debug:
-      # msg: "{{args}}"
-  - ansible.windows.win_powershell:
-      script: |
-        $Ansible.Result = "$({{path_resolver}})"
-        $obj = Get-Item $Ansible.Result
-        if(($obj -ne $null) -and $obj -isnot [System.IO.DirectoryInfo]){
-          throw "Path is not directory!!!"
-        }
-    register: pwsh_output
-    changed_when: false
-  
-  - block:
-    - win_command: "attrib -s -h {{path_ini}}"
+    # msg: "{{args}}"
+    - ansible.windows.win_powershell:
+        script: |
+          $Ansible.Result = "$({{path_resolver}})"
+          $obj = Get-Item $Ansible.Result
+          if(($obj -ne $null) -and $obj -isnot [System.IO.DirectoryInfo]){
+            throw "Path is not directory!!!"
+          }
+      register: pwsh_output
       changed_when: false
 
-    - name: Setting folder icon...
-      include_role:
-        name: win_ini
+    - block:
+        - win_command: "attrib -s -h {{path_ini}}"
+          changed_when: false
+
+        - name: Setting folder icon...
+          include_role:
+            name: win_ini
+          vars:
+            path: "{{path_ini}}"
+            # ini: "{{template_ini}}"
+
+        - win_command: "attrib +s +h {{path_ini}}"
+          register: ret
+          changed_when: false
+          failed_when:
+            - '"not found" in ret.stdout'
+        - win_command: "attrib +r {{path_folder}}"
+          register: ret
+          changed_when: false
+          failed_when:
+            - '"not found" in ret.stdout'
+
       vars:
-        path: "{{path_ini}}"
-        # ini: "{{template_ini}}"
-
-    - win_command: "attrib +s +h {{path_ini}}"
-      register: ret
-      changed_when: false
-      failed_when:
-        - '"not found" in ret.stdout'
-    - win_command: "attrib +r {{path_folder}}"
-      register: ret
-      changed_when: false
-      failed_when:
-        - '"not found" in ret.stdout'
-
-    vars:
-      path_folder: "{{pwsh_output.result}}"
-      path_ini: "{{path_folder}}\\desktop.ini"
-      # ini: "{{args.ini | mandatory }}"
-      # overwrite: "{{item.overwrite|default(omit,true)}}"
+        path_folder: "{{pwsh_output.result}}"
+        path_ini: "{{path_folder}}\\desktop.ini"
+        # ini: "{{args.ini | mandatory }}"
+        # overwrite: "{{item.overwrite|default(omit,true)}}"
   vars:
     path_resolver: '[System.Environment]::ExpandEnvironmentVariables("{{args.path|mandatory}}")'
-    ini: 
+    ini:
       ".ShellClassInfo":
         IconResource: "{{args.IconResource | default('',true)}}"
