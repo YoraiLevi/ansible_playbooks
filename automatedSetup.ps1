@@ -16,16 +16,16 @@ $scriptPath = $MyInvocation.MyCommand.Path
 if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2 installed
 (-not ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)))) {
     #distro installed 
+    $taskName = "automatedSetup"
     try {
         if (-not $scriptPath) {
             cd $TEMP; rm "MyFuckingWikiOfEverything" -Force -Recurse -ErrorAction SilentlyContinue
             git clone "https://github.com/YoraiLevi/MyFuckingWikiOfEverything.git"; cd "MyFuckingWikiOfEverything/Ansible"
             $scriptPath = Join-Path $PWD -ChildPath "automatedSetup.ps1"
         }
+        $command = "`$playbook=$playbook;&$scriptPath"
         # Schedule task if needed
         $playbook = if($playbook){$playbook}else{'theEVERYTHING.yml'}
-        $taskName = "automatedSetup"
-        $command = "`$playbook=$playbook;&$scriptPath"
         if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) {
             $trigger = New-ScheduledTaskTrigger -AtLogon
             $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -Command $command"
