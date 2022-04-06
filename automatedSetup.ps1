@@ -1,4 +1,5 @@
 $prevPWD = $PWD
+$TEMP = $env:TEMP
 function Test-Administrator {  
     $user = [Security.Principal.WindowsIdentity]::GetCurrent();
     (New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)  
@@ -32,7 +33,6 @@ if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2
             Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest
         }
         
-        $TEMP = $env:TEMP
         $ansibleDir = (get-item $scriptPath).Directory
         cd $ansibleDir
         &".\ExecutePlaybook.ps1" -playbookFile ".\playbooks\$playbook" -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client | Tee-Object -FilePath "$playbook.log"
@@ -40,7 +40,7 @@ if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2
     }
     finally {
         cd $prevPWD
-        Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
+        Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
         Pause
         exit $lastexitcode
     }
