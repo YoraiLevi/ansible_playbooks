@@ -24,9 +24,9 @@ if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2
             git clone "https://github.com/YoraiLevi/MyFuckingWikiOfEverything.git"; cd "MyFuckingWikiOfEverything/Ansible"
             $scriptPath = Join-Path $PWD -ChildPath "automatedSetup.ps1"
         }
+        $playbook = if($playbook){$playbook}else{'theEVERYTHING.yml'}
         $command = "`$playbook=$playbook;&$scriptPath"
         # Schedule task if needed
-        $playbook = if($playbook){$playbook}else{'theEVERYTHING.yml'}
         if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) {
             $trigger = New-ScheduledTaskTrigger -AtLogon
             $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -Command $command"
