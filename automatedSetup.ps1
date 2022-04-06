@@ -31,6 +31,7 @@ if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2
             $trigger = New-ScheduledTaskTrigger -AtLogon
             $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -Command $command"
             Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest
+            Restart-Computer
         }
         
         $ansibleDir = (get-item $scriptPath).Directory
