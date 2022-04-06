@@ -25,7 +25,7 @@ if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2
         # Schedule task if needed
         $playbook = if($playbook){$playbook}else{'theEVERYTHING.yml'}
         $taskName = "automatedSetup"
-        $command = "&$scriptPath"
+        $command = "`$playbook=$playbook;&$scriptPath"
         if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) {
             $trigger = New-ScheduledTaskTrigger -AtLogon
             $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -Command $command"
@@ -35,12 +35,13 @@ if ( (-not ((wsl --list | out-string) -eq (wsl --help | out-string))) -and #wsl2
         $TEMP = $env:TEMP
         $ansibleDir = (get-item $scriptPath).Directory
         cd $ansibleDir
-        &".\ExecutePlaybook.ps1" -playbookFile ".\playbooks\$playbook" -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client
+        &".\ExecutePlaybook.ps1" -playbookFile ".\playbooks\$playbook" -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client | Tee-Object -FilePath "$playbook.log"
         #clear scheduled task
     }
     finally {
         cd $prevPWD
         Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
+        Pause
         exit $lastexitcode
     }
 }
