@@ -16,13 +16,13 @@ while ($true) {
         }
         if ((wsl --list | out-string) -eq (wsl --help | out-string)) {
             Write-Host "Attempting to install wsl2"
-            try {
-                choco install wsl2 --params "/Version:2 /Retry:true"
-            }
-            catch {
-                # If packages fails but installs anyways a restart is required
-                Invoke-Reboot
-            }
+            # try {
+            choco install wsl2 --params "/Version:2 /Retry:true"
+            # }
+            # catch {
+            # If packages fails but installs anyways a restart is required
+            # Invoke-Reboot
+            # }
         }
         elseif ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
             # for aesthetics make sure wsl2 is registered in chocolatey
@@ -45,6 +45,12 @@ while ($true) {
     }
     catch {
         Write-Host $_
+        echo "last exit code: $LASTEXITCODE"
+        if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604){
+            Pause
+            Invoke-Reboot
+        }
+
     }
 }
 # Delete Attempts after done
