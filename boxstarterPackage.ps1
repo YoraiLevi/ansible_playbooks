@@ -31,14 +31,11 @@ while ($true) {
             Write-Host "Attempting to install wsl-ubuntu-2004"
             wsl --update # needed to register distro
             wsl --shutdown
-            while (true) {
-                try {
-                    choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
-                }
-                catch {
-                    break
-                }
-                break
+            try {
+                choco install wsl-ubuntu-2004 --params "/InstallRoot:true"
+            }
+            catch {
+                Write-Output $_
             }
             Write-Host "Waiting for distro to register..."
             while ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
