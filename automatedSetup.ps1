@@ -429,6 +429,7 @@ if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) 
     Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest
 }
 try {
+    Check-Chocolatey -Force
     while ($true) {
         try {
             if (Installed-Distro) {
