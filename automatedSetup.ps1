@@ -461,13 +461,11 @@ try {
             }
         }
         catch {
-            Write-Host $_
-            echo "last exit code: $LASTEXITCODE"
+            echo "Caught Error, lastexitcode: $LASTEXITCODE"; echo $_;
             if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604 -or $LASTEXITCODE -eq 1603) {
-                Pause
-                Invoke-Reboot
+                echo "Restarting..."
+                Restart-Computer
             }
-
         }
     }
 
