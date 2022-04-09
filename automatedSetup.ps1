@@ -394,7 +394,7 @@ function Installed-WSL2 {
 function Installed-Distro {
     return (wsl cat /proc/version | Out-String) -ne (wsl --list | Out-String)  
 }
-
+function choco(){choco.exe $args '-y'}
 
 Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
@@ -444,7 +444,7 @@ try {
             elseif (-not (Installed-Distro)) {
                 # for aesthetics make sure wsl2 is registered in chocolatey
                 Write-Host "Making sure chocolatey has wsl2 listed"
-                choco install wsl2
+                choco install wsl2 --params "/Version:2 /Retry:true"
                 Write-Host "Attempting to install wsl-ubuntu-2004"
                 wsl --update # needed to register distro
                 wsl --shutdown
@@ -455,7 +455,7 @@ try {
                     Write-Output $_
                 }
                 Write-Host "Waiting for distro to register..."
-                while ((wsl cat /proc/version | Out-String) -eq (wsl --list | Out-String)) {
+                while (-not (Installed-Distro)) {
                     Start-Sleep -s 1
                 }
             }

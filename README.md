@@ -3,8 +3,11 @@
 ## Setup windows with Ansible automatically
 
 ```
-$playbook = 'theEVERYTHING.yml'
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/MyFuckingWikiOfEverything/master/Ansible/automatedSetup.ps1'))
+$playbook = 'theEVERYTHING.yml'; $code = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/MyFuckingWikiOfEverything/master/Ansible/automatedSetup.ps1'); Invoke-Command  $([Scriptblock]::Create(($code) -join "`r`n")) -ArgumentList $playbook
+```
+
+```
+$playbook = 'ping.yml'; $code = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/MyFuckingWikiOfEverything/master/Ansible/automatedSetup.ps1'); Invoke-Command  $([Scriptblock]::Create(($code) -join "`r`n")) -ArgumentList $playbook
 ```
 
 TODOS:
