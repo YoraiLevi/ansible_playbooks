@@ -464,7 +464,7 @@ try {
             }
         }
         catch {
-            echo "Caught Error, lastexitcode: $LASTEXITCODE"; echo $_;
+            Write-Host "caught error, lastexitcode: $LASTEXITCODE"; Write-Host $_;
             if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604 -or $LASTEXITCODE -eq 1603) {
                 echo "Restarting..."
                 Restart-Computer -Force
