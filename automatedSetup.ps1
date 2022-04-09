@@ -1,3 +1,4 @@
+# .\Ansible\automatedSetup.ps1 'ping.yml' 1 2 'b'
 # Invoke-Command  $([Scriptblock]::Create((cat .\Ansible\automatedSetup.ps1) -join "`r`n")) -ArgumentList 'ping.yml'
 param($playbook = 'theEVERYTHING.yml')
 $ErrorActionPreference = 'stop'
@@ -423,8 +424,8 @@ if (-not $scriptPath) {
 }
 
 $executionPolicyCommand = "Set-ExecutionPolicy Bypass -Scope Process -Force"
-$command = "$executionPolicyCommand; &`"$scriptPath`""
-
+$commandArguments = ($args + ($PSBoundParameters.GetEnumerator() | foreach {"-{0} {1}" -f $_.Key,$_.Value})) -join ' '
+$command = "$executionPolicyCommand; &`"$scriptPath`" $commandArguments"
 # Schedule task if needed
 if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) {
     $trigger = New-ScheduledTaskTrigger -AtLogon
