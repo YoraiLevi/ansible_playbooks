@@ -394,7 +394,7 @@ function Installed-WSL2 {
 function Installed-Distro {
     return (wsl cat /proc/version | Out-String) -ne (wsl --list | Out-String)  
 }
-function choco(){choco.exe $args '-y'}
+function choco(){$ErrorActionPreference = "Stop";choco.exe $args '-y'; cif($lastexitcode -ne 0){throw}}
 
 Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
