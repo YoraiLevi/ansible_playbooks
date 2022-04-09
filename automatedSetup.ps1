@@ -429,7 +429,7 @@ if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) 
     Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest
 }
 try {
-    Check-Chocolatey -Force
+    Write-Host -NoNewline 'Check-Chocolatey? '; Check-Chocolatey -Force
     while ($true) {
         try {
             if (Installed-Distro) {
@@ -464,7 +464,8 @@ try {
             echo "Caught Error, lastexitcode: $LASTEXITCODE"; echo $_;
             if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604 -or $LASTEXITCODE -eq 1603) {
                 echo "Restarting..."
-                Restart-Computer
+                Restart-Computer -Force
+                exit
             }
         }
     }
