@@ -486,8 +486,8 @@ try {
 }
 finally {
     Write-Output "Exiting... $lastexitcode"
-    Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
-    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
     Pause
 }
+Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
+Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
 Stop-Transcript
