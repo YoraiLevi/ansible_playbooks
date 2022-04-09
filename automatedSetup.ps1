@@ -405,9 +405,10 @@ $repoUrl = 'https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/
 
 
 $winLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
-# if (-not (Get-ItemProperty -Path $winLogonKey -Name "AutoAdminLogon" -ErrorAction SilentlyContinue)) {
+$winLogon = (Get-ItemProperty -Path $winLogonKey -ErrorAction SilentlyContinue)
+if ($winLogon.AutoAdminLogon -ne 1 -or $winLogon.DefaultUserName -ne $env:USERNAME) {
     Autologon -BackupFile $autoLoginBackupFilePath
-# }
+}
 # runs from internet
 if (-not $scriptPath) { 
     $archivePath = (Join-Path $TEMP 'master.zip')
@@ -437,7 +438,7 @@ try {
                 Write-Host "Distro is installed..."
                 break;
             }
-            if (Installed-WSL2) {
+            if (-not (Installed-WSL2)) {
                 Write-Host "Attempting to install wsl2"
                 choco install wsl2 --params "/Version:2 /Retry:true"
             }
