@@ -396,6 +396,8 @@ function Installed-Distro {
 }
 function choco(){$ErrorActionPreference = "Stop";choco.exe $args '-y'; if($lastexitcode -ne 0){throw}}
 
+Start-Transcript -IncludeInvocationHeader -Append -OutputDirectory $ENV:ProgramData
+
 Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
 $TEMP = Join-Path $env:TEMP $(New-Guid) | %{ mkdir $_ } #$env:TEMP
@@ -466,7 +468,7 @@ try {
             if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604 -or $LASTEXITCODE -eq 1603) {
                 echo "Restarting..."
                 Restart-Computer -Force
-                exit
+                exit 0
             }
         }
     }
@@ -488,3 +490,4 @@ finally {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
     Pause
 }
+Stop-Transcript
