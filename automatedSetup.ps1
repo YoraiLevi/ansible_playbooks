@@ -397,13 +397,14 @@ function Installed-Distro {
 }
 function choco(){$ErrorActionPreference = "Stop";choco.exe $args '-y'; if($lastexitcode -ne 0){throw}}
 
-Start-Transcript -IncludeInvocationHeader -Append -OutputDirectory $ENV:ProgramData
+$taskName = "automatedSetup"
+$localdir = $(Join-Path $env:ProgramData $taskName)
+Start-Transcript -IncludeInvocationHeader -Append -OutputDirectory $localdir
 
 Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
 $TEMP = Join-Path $env:TEMP $(New-Guid) | %{ mkdir $_ } #$env:TEMP
-$autoLoginBackupFilePath = $(Join-Path $env:ProgramData 'backup.autologon')
-$taskName = "automatedSetup"
+$autoLoginBackupFilePath = $(Join-Path $localdir 'backup.autologon')
 $repoUrl = 'https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/heads/master.zip'
 
 
@@ -413,14 +414,14 @@ if ($winLogon.AutoAdminLogon -ne 1 -or $winLogon.DefaultUserName -ne $env:USERNA
     Autologon -BackupFile $autoLoginBackupFilePath
 }
 # runs from internet
-if (-not $scriptPath) { 
+if (-not $scriptPath) {
     $archivePath = (Join-Path $TEMP 'master.zip')
     $extractPath = $(Join-Path $TEMP 'master')
     Invoke-WebRequest $repoUrl -OutFile $archivePath
     Expand-Archive -Path $archivePath $extractPath -Force #Overwrites
     # $files = Expand-Archive -Path $archivePath $TEMP -Force -PassThru #Overwrites
-    $files = Get-ChildItem -Recurse -Path $extractPath -Filter 'automatedSetup.ps1'
-    $scriptPath = $files | Where-Object { $_.Name -eq 'automatedSetup.ps1' } | select -First 1 | select -ExpandProperty FullName
+    $files = Get-ChildItem -Recurse -Path $extractPath -Filter "$taskName.ps1"
+    $scriptPath = $files | Where-Object { $_.Name -eq "$taskName.ps1" } | select -First 1 | select -ExpandProperty FullName
 }
 
 $executionPolicyCommand = "Set-ExecutionPolicy Bypass -Scope Process -Force"
@@ -491,4 +492,5 @@ finally {
 }
 Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
 Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
+rm $autoLoginBackupFilePath -ErrorAction SilentlyContinue -Force
 Stop-Transcript
