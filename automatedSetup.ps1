@@ -405,9 +405,9 @@ $repoUrl = 'https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/
 
 
 $winLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
-if (-not (Get-ItemProperty -Path $winLogonKey -Name "AutoAdminLogon" -ErrorAction SilentlyContinue)) {
+# if (-not (Get-ItemProperty -Path $winLogonKey -Name "AutoAdminLogon" -ErrorAction SilentlyContinue)) {
     Autologon -BackupFile $autoLoginBackupFilePath
-}
+# }
 # runs from internet
 if (-not $scriptPath) { 
     $archivePath = (Join-Path $TEMP 'master.zip')
