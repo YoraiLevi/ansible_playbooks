@@ -354,6 +354,7 @@ function Throw-NotAdministrator {
         throw "Not Admin"
     }
 }
+function Is64Bit {  [IntPtr]::Size -eq 8  }
 function Check-Chocolatey {
     # iex ((New-Object System.Net.WebClient).DownloadString('https://boxstarter.org/bootstrapper.ps1')); Check-Chocolatey -Force
     Param(
@@ -395,7 +396,7 @@ function Installed-WSL2 {
 function Installed-Distro {
     return (wsl cat /proc/version | Out-String) -ne (wsl --list | Out-String)  
 }
-function choco(){$ErrorActionPreference = "Stop";choco.exe $args '-y'; if($lastexitcode -ne 0){throw}}
+function choco() { $ErrorActionPreference = "Stop"; choco.exe $args '-y'; if ($lastexitcode -ne 0) { throw } }
 
 $taskName = "automatedSetup"
 $localdir = $(Join-Path $env:ProgramData $taskName)
@@ -403,7 +404,7 @@ Start-Transcript -IncludeInvocationHeader -Append -OutputDirectory $localdir
 
 Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
-$TEMP = Join-Path $env:TEMP $(New-Guid) | %{ mkdir $_ } #$env:TEMP
+$TEMP = Join-Path $env:TEMP $(New-Guid) | % { mkdir $_ } #$env:TEMP
 $autoLoginBackupFilePath = $(Join-Path $localdir 'backup.autologon')
 $repoUrl = 'https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/heads/master.zip'
 
@@ -425,7 +426,7 @@ if (-not $scriptPath) {
 }
 
 $executionPolicyCommand = "Set-ExecutionPolicy Bypass -Scope Process -Force"
-$commandArguments = ($args + ($PSBoundParameters.GetEnumerator() | foreach {"-{0} {1}" -f $_.Key,$_.Value})) -join ' '
+$commandArguments = ($args + ($PSBoundParameters.GetEnumerator() | foreach { "-{0} {1}" -f $_.Key, $_.Value })) -join ' '
 $command = "$executionPolicyCommand; &`"$scriptPath`" $commandArguments"
 # Schedule task if needed
 if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) {
@@ -463,6 +464,8 @@ try {
                 while (-not (Installed-Distro)) {
                     Start-Sleep -s 1
                 }
+                wsl --update # needed to register distro
+                wsl --shutdown
             }
         }
         catch {
@@ -490,7 +493,9 @@ finally {
     Write-Output "Exiting... $lastexitcode"
     Pause
 }
-Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
+if (Test-Path $autoLoginBackupFilePath) {
+    Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
+    rm $autoLoginBackupFilePath -ErrorAction SilentlyContinue -Force
+}
 Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
-rm $autoLoginBackupFilePath -ErrorAction SilentlyContinue -Force
 Stop-Transcript
