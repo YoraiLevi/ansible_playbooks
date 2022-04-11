@@ -354,40 +354,15 @@ function Throw-NotAdministrator {
         throw "Not Admin"
     }
 }
-function Is64Bit {  [IntPtr]::Size -eq 8  }
-function Check-Chocolatey {
-    # iex ((New-Object System.Net.WebClient).DownloadString('https://boxstarter.org/bootstrapper.ps1')); Check-Chocolatey -Force
-    Param(
-        [switch] $Force
-    )
-    if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
-        $message = "Chocolatey is going to be downloaded and installed on your machine. If you do not have the .NET Framework Version 4 or greater, that will also be downloaded and installed."
-        Write-Host $message
-        if ($Force -OR (Confirm-Install)) {
-            $exitCode = Enable-Net40
-            if ($exitCode -ne 0) {
-                Write-Warning ".net install returned $exitCode. You likely need to reboot your computer before proceeding with the install."
-                return $false
-            }
-            try {
-                $env:ChocolateyInstall = "$env:programdata\chocolatey"
-                New-Item $env:ChocolateyInstall -Force -type directory | Out-Null
-                $url = "https://chocolatey.org/api/v2/package/chocolatey/"
-                $wc = new-object net.webclient
-                $wp = [system.net.WebProxy]::GetDefaultProxy()
-                $wp.UseDefaultCredentials = $true
-                $wc.Proxy = $wp
-                iex ($wc.DownloadString("https://chocolatey.org/install.ps1"))
-                $env:path = "$env:path;$env:ChocolateyInstall\bin"
-            }
-            catch {
-                return $false
-            }
+function Restart-Computer {  
+    Microsoft.PowerShell.Management\Restart-Computer -Force
+    pause
+}
+function Install-Chocolatey {
+        if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
+            Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+            Restart-Computer
         }
-        else {
-            return $false
-        }
-    }
     return $true
 }
 function Installed-WSL2 {
@@ -435,7 +410,7 @@ if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) 
     Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest
 }
 try {
-    Write-Host -NoNewline 'Check-Chocolatey? '; Check-Chocolatey -Force
+    Install-Chocolatey
     while ($true) {
         try {
             if (Installed-Distro) {
@@ -472,7 +447,7 @@ try {
             Write-Host "caught error, lastexitcode: $LASTEXITCODE"; Write-Host $_;
             if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604 -or $LASTEXITCODE -eq 1603) {
                 echo "Restarting..."
-                Restart-Computer -Force
+                Restart-Computer
                 exit 0
             }
         }
