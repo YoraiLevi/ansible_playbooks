@@ -465,11 +465,11 @@ try {
 }
 finally {
     Write-Output "Exiting... $lastexitcode"
-    Pause
 }
 if (Test-Path $autoLoginBackupFilePath) {
     Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
     rm $autoLoginBackupFilePath -ErrorAction SilentlyContinue -Force
 }
+Pause
 Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
 Stop-Transcript
