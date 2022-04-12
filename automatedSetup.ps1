@@ -356,7 +356,7 @@ function Throw-NotAdministrator {
 }
 function Restart-Computer {  
     Microsoft.PowerShell.Management\Restart-Computer -Force
-    pause
+    exit
 }
 function Install-Chocolatey {
         if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
