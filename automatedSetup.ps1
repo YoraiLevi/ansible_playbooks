@@ -1,8 +1,8 @@
 # .\Ansible\automatedSetup.ps1 'ping.yml' 1 2 'b'
 # Invoke-Command  $([Scriptblock]::Create((cat .\Ansible\automatedSetup.ps1) -join "`r`n")) -ArgumentList 'ping.yml'
 param($playbook = 'theEVERYTHING.yml')
-$ErrorActionPreference = 'stop'
-
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
 function Autologon {
     param([string]$BackupFile)
     Throw-NotAdministrator
@@ -363,7 +363,6 @@ function Install-Chocolatey {
             Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
             Restart-Computer
         }
-    return $true
 }
 function Installed-WSL2 {
     return (wsl --list | out-string) -ne (wsl --help | out-string)
@@ -439,7 +438,7 @@ try {
                 while (-not (Installed-Distro)) {
                     Start-Sleep -s 1
                 }
-                wsl --update # needed to register distro
+                wsl --update
                 wsl --shutdown
             }
         }

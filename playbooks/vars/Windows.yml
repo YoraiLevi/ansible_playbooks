@@ -68,7 +68,7 @@ general_dev_tools:
     # fix ssh issues?
     # sudo ip link set dev eth0 mtu 1300
     - name: gsudo
-    - name: docker-desktop
+    # - name: docker-desktop
     - name: vagrant
     - name: vscode
     - name: git
