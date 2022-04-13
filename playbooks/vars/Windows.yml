@@ -69,9 +69,9 @@ general_dev_tools:
     # sudo ip link set dev eth0 mtu 1300
     - name: gsudo
     # - name: docker-desktop
-    - name: vagrant
+    # - name: vagrant
     - name: vscode
-    - name: git
+    # - name: git
       package_params: "/NoAutoCrlf /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /Editor:"
     - name: poshgit
     - name: powershell-core
