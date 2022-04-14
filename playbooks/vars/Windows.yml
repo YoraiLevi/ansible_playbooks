@@ -94,7 +94,7 @@ misc:
     - name: jdownloader
     - name: qbittorrent
     - name: bitwarden
-    - name: google-drive-file-stream
+    - name: googledrive
     - name: office365business
       package_params: '/exclude:"Access Groove Lync OneDrive OneNote Outlook Publisher" /eula:"true"'
 misc_misc:

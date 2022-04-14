@@ -1,6 +1,6 @@
 # .\Ansible\automatedSetup.ps1 'ping.yml' 1 2 'b'
-# Invoke-Command  $([Scriptblock]::Create((cat .\Ansible\automatedSetup.ps1) -join "`r`n")) -ArgumentList 'ping.yml'
-param($playbook = 'theEVERYTHING.yml')
+# Invoke-Command  $([Scriptblock]::Create((cat .\Ansible\automatedSetup.ps1) -join "`r`n")) -ArgumentList 'ping.yml','DEV'
+param($playbook = 'theEVERYTHING.yml',$branch='master')
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 function Autologon {
@@ -371,7 +371,6 @@ function Installed-Distro {
     return (wsl cat /proc/version | Out-String) -ne (wsl --list | Out-String)  
 }
 function choco() { $ErrorActionPreference = "Stop"; choco.exe $args '-y'; if ($lastexitcode -ne 0) { throw } }
-
 $taskName = "automatedSetup"
 $localdir = $(Join-Path $env:ProgramData $taskName)
 Start-Transcript -IncludeInvocationHeader -Append -OutputDirectory $localdir
@@ -380,8 +379,7 @@ Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
 $TEMP = Join-Path $env:TEMP $(New-Guid) | % { mkdir $_ } #$env:TEMP
 $autoLoginBackupFilePath = $(Join-Path $localdir 'backup.autologon')
-$repoUrl = 'https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/heads/master.zip'
-
+$repoUrl = "https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/heads/$branch.zip"
 
 $winLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 $winLogon = (Get-ItemProperty -Path $winLogonKey -ErrorAction SilentlyContinue)
@@ -390,8 +388,8 @@ if ($winLogon.AutoAdminLogon -ne 1 -or $winLogon.DefaultUserName -ne $env:USERNA
 }
 # runs from internet
 if (-not $scriptPath) {
-    $archivePath = (Join-Path $TEMP 'master.zip')
-    $extractPath = $(Join-Path $TEMP 'master')
+    $archivePath = (Join-Path $TEMP "$branch.zip")
+    $extractPath = $(Join-Path $TEMP "$branch")
     Invoke-WebRequest $repoUrl -OutFile $archivePath
     Expand-Archive -Path $archivePath $extractPath -Force #Overwrites
     # $files = Expand-Archive -Path $archivePath $TEMP -Force -PassThru #Overwrites
