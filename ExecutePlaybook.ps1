@@ -1,5 +1,5 @@
 # .\ExecutePlaybook.ps1 -playbookFile .\playbooks\theEVERYTHING.yaml -keyFilePath C:\Users\devic\.ssh\id_ed25519_SSHKey -inventoryFile .\playbooks\inventories\localWindowsWSL\
-# .\ExecutePlaybook.ps1 -playbookFile '.\playbooks\theEVERYTHING.yml' -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client.sh
+# .\ExecutePlaybook.ps1 -playbookFile '.\playbooks\theEVERYTHING.yml' -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client
 [cmdletbinding()]
 param([string]$playbookFile,
     [string]$keyFilePath,

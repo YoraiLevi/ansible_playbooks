@@ -1,6 +1,6 @@
 # .\Ansible\automatedSetup.ps1 'ping.yml' 1 2 'b'
 # Invoke-Command  $([Scriptblock]::Create((cat .\Ansible\automatedSetup.ps1) -join "`r`n")) -ArgumentList 'ping.yml','DEV'
-param($playbook = 'theEVERYTHING.yml',$branch='master')
+param($playbook = 'theEVERYTHING.yml',$branch='master', [switch]$v = $false)
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 function Autologon {
@@ -456,18 +456,18 @@ try {
         $prevPWD = $PWD
         cd $ansibleDir;
         iex $executionPolicyCommand
-        &".\ExecutePlaybook.ps1" -playbookFile ".\playbooks\$playbook" -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client | Tee-Object -FilePath "$playbook.log"
+        &".\ExecutePlaybook.ps1" -playbookFile ".\playbooks\$playbook" -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client -v:$v.IsPresent | Tee-Object -FilePath "$playbook.log"
         cd $prevPWD;
         
     }
 }
 finally {
     Write-Output "Exiting... $lastexitcode"
+    Pause
 }
 if (Test-Path $autoLoginBackupFilePath) {
     Remove-SecureAutoLogon -BackupFile $autoLoginBackupFilePath
     rm $autoLoginBackupFilePath -ErrorAction SilentlyContinue -Force
 }
-Pause
 Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
 Stop-Transcript

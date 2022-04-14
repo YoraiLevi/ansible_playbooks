@@ -10,7 +10,7 @@
       rescue:
         - name: Missing nvm, Installing...
           win_chocolatey:
-            name: nvm
+            name: nvm.portable
         - win_command: "nvm root"
           changed_when: false
           register: nvm_root
