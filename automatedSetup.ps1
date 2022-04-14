@@ -359,7 +359,7 @@ function Restart-Computer {
     exit
 }
 function Install-Chocolatey {
-    New-Item $PROFILE -ErrorAction SilentlyContinue
+    New-Item $PROFILE -ErrorAction SilentlyContinue -Force
     if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
         Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
         Restart-Computer
