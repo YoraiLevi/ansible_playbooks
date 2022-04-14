@@ -359,7 +359,7 @@ function Restart-Computer {
     exit
 }
 function Install-Chocolatey {
-    if (Test-Path $Profile) {
+    if (-not (Test-Path $Profile)) {
         New-Item $PROFILE -ErrorAction SilentlyContinue -Force
     }
     if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
