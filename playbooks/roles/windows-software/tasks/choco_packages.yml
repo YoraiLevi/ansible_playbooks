@@ -5,12 +5,13 @@
     - name: "Install chocolatey packages ({{args.name}})"
       win_chocolatey: "{{args}}"
       register: choco
+      failed_when: (not choco.changed) and choco.rc != 0 and choco.rc !=1638
     - name: "Reboot? {{choco.changed and choco.rc == 3010}}"
       ansible.windows.win_reboot:
       when: choco.changed and choco.rc == 3010
       # ansible.builtin.debug:
       # msg: "{{ item | type_debug }}"
-  rescue:
-    - fail:
-        msg: "{{choco}}"
-      when: choco.rc !=1638
+  # rescue:
+  #   - fail:
+  #       msg: "{{choco}}"
+  #     when: choco.rc !=1638
