@@ -1,6 +1,6 @@
 # .\Ansible\automatedSetup.ps1 'ping.yml' 1 2 'b'
 # Invoke-Command  $([Scriptblock]::Create((cat .\Ansible\automatedSetup.ps1) -join "`r`n")) -ArgumentList 'ping.yml','DEV'
-param($playbook = 'theEVERYTHING.yml',$branch='master', [switch]$v = $false)
+param($playbook = 'theEVERYTHING.yml', $branch = 'master', [switch]$v = $false)
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 function Autologon {
@@ -359,10 +359,11 @@ function Restart-Computer {
     exit
 }
 function Install-Chocolatey {
-        if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
-            Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-            Restart-Computer
-        }
+    New-Item $PROFILE -ErrorAction SilentlyContinue
+    if (-not $env:ChocolateyInstall -or -not (Test-Path "$env:ChocolateyInstall\bin\choco.exe")) {
+        Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        Restart-Computer
+    }
 }
 function Installed-WSL2 {
     return (wsl --list | out-string) -ne (wsl --help | out-string)
@@ -402,9 +403,10 @@ $commandArguments = ($args + ($PSBoundParameters.GetEnumerator() | foreach { "-{
 $command = "$executionPolicyCommand; &`"$scriptPath`" $commandArguments"
 # Schedule task if needed
 if (-not (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue)) {
+    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -StartWhenAvailable -DontStopIfGoingOnBatteries -DontStopOnIdleEnd -MultipleInstances IgnoreNew -Priority 0
     $trigger = New-ScheduledTaskTrigger -AtLogon
     $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -Command `"$command`""
-    Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest
+    Register-ScheduledTask -Trigger $trigger -Action $action -TaskName $taskName -RunLevel Highest -Settings $settings
 }
 try {
     Install-Chocolatey
