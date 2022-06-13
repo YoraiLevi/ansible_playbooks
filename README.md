@@ -22,3 +22,4 @@ TODOS:
 * win_reg_file cannot process hex: type correctly (binary) aka no capslock .reg
 * Issue with installing python (when not installed) via choco
 * download_file needs the directory to be already made
+* Task scheduler task in background https://superuser.com/a/1332982/1220772
