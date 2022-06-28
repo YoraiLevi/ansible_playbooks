@@ -1,3 +1,4 @@
+# $playbook = 'theEVERYTHING.yml';  [switch]$v = $false; &".\ExecutePlaybook.ps1" -playbookFile ".\playbooks\$playbook" -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client -v:$v.IsPresent | Tee-Object -FilePath "$playbook.log"
 # .\ExecutePlaybook.ps1 -playbookFile .\playbooks\theEVERYTHING.yaml -keyFilePath C:\Users\devic\.ssh\id_ed25519_SSHKey -inventoryFile .\playbooks\inventories\localWindowsWSL\
 # .\ExecutePlaybook.ps1 -playbookFile '.\playbooks\theEVERYTHING.yml' -inventoryFile .\playbooks\inventories\localWindowsWSL\ -vault_id dev@vault/uuid-client
 [cmdletbinding()]

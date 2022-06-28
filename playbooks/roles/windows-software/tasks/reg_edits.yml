@@ -1,13 +1,43 @@
 - block:
-    # - name: Apply registry modifications
-    #   debug:
-    #     msg: "{{args}}"
-    - name: "Apply registry modifications: {{args.name}}"
-      include_role:
-        name: win_reg_file
-      vars:
-        file_contents: "{{item}}"
-      with_file: "{{args.name}}"
-      # - name: "Apply registry modifications: {{args.name}}"
+  - name: Create temporary file
+    ansible.windows.win_tempfile:
+      state: directory
+      suffix: ansible_reg_edits
+    register: tmp
+    changed_when: false
+  - name: Copy reg edits to temporary file
+    ansible.windows.win_copy:
+      dest: "{{tmp.path}}"
+      src: "{{args.name}}"
+    changed_when: false
+  - name: Apply registry modifications
+    # debug:
+    community.windows.win_regmerge:
+      path: '{{ (tmp.path + "/" + args.name) | regex_replace("\\", "/") }}'
+    # # - name: Apply registry modifications
+    # #   debug:
+    # #     msg: "{{args}}"
+    # - name: "Apply registry modifications: {{args.name}}"
+    #   include_role:
+    #     name: win_reg_file
+    #   vars:
+    #     file_contents: "{{item}}"
+    #   with_file: "{{args.name}}"
+    #   # - name: "Apply registry modifications: {{args.name}}"
       #   win_regmerge:
       #     path: "{{args.name}}"
+#     - name: Copy files to Windows
+#       win_copy:
+#         src: "{{item.src | mandatory}}"
+#         dest: "{{item.dest | mandatory}}"
+#       loop: "{{windows_software | json_query('*|[?install].win_copy[*][]')}}"
+    # - win_tempfile:
+    #     state: directory
+    #     suffix: ansible_store_install
+    #   register: tmp
+    #   changed_when: false
+    #   when: path | default(true,true)
+# - name: Create temporary file
+#   ansible.windows.win_tempfile:
+#     state: file
+#     suffix: temp

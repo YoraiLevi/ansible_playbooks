@@ -446,6 +446,7 @@ try {
         }
         catch {
             Write-Host "caught error, lastexitcode: $LASTEXITCODE"; Write-Host $_;
+            # https://docs.chocolatey.org/en-us/configuration#exit-codes
             if ($LASTEXITCODE -eq 350 -or $LASTEXITCODE -eq 3010 -or $LASTEXITCODE -eq 1604 -or $LASTEXITCODE -eq 1603) {
                 echo "Restarting..."
                 Restart-Computer
