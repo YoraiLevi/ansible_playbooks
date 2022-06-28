@@ -23,3 +23,5 @@ TODOS:
 * Issue with installing python (when not installed) via choco
 * download_file needs the directory to be already made
 * Task scheduler task in background https://superuser.com/a/1332982/1220772
+* Install Interception Driver on laptop (for ahk) https://github.com/evilC/AutoHotInterception#setup
+* set login keyboard <https://social.technet.microsoft.com/Forums/windows/en-US/6a21b20a-4d04-460a-b672-968de78c6646/command-line-tools-to-completely-change-regioninput-language-for-default-user-and-welcome-screen?forum=winservergen>

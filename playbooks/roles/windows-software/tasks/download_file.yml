@@ -1,3 +1,7 @@
 - block:
+    - win_shell: Stop-Process -Name {{args.dest | win_basename | replace('.exe','')}} -Force
+      when: "'.exe' in args.dest"
+      failed_when: false
+      changed_when: false
     - name: Download "{{args.url}}"
       win_get_url: "{{args}}"

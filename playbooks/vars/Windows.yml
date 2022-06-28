@@ -5,6 +5,7 @@ root_dir_structure:
   win_path:
     - elements:
         - "{{root}}\\bin"
+      scope: user
   win_desktopini:
     - path: "{{root}}\\Documents\\source"
       IconResource: C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico,0
@@ -59,20 +60,19 @@ vagrant_home:
   win_environment:
     - name: VAGRANT_HOME
       value: "{{root}}\\VirtualMachines\\.vagrant.d"
-      level: machine
+      level: user
 vagrant_default_provider:
 general_dev_tools:
   install: yes
   choco_packages:
     # - name: wsl2
     # fix ssh issues?
-    # sudo ip link set dev eth0 mtu 1300
     - name: gsudo
     # - name: docker-desktop
     # - name: vagrant
     - name: vscode
     # - name: git
-      package_params: "/NoAutoCrlf /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /Editor:"
+      # package_params: "/NoAutoCrlf /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /Editor:"
     - name: poshgit
     - name: powershell-core
   include_task:
@@ -121,6 +121,7 @@ python:
   install: yes
   python_packages:
     - name: pip --upgrade
+    - name: pipx
     - name: tox
     - name: black
     - name: virtualenv
@@ -166,8 +167,8 @@ personalize:
   reg_edits:
     - name: turn_on_restart_apps_after_sign_in_for_current_user.reg
     - name: automaticaccentcolor.reg
-    - name: Use_Dark_theme_color_for_default_app_mode_for_current_user.reg
-    - name: Use_Dark_theme_color_for_default_Windows_mode_for_current_user.reg
+    - name: use_dark_theme_color_for_default_app_mode_for_current_user.reg
+    - name: use_dark_theme_color_for_default_windows_mode_for_current_user.reg
     - name: enable_last_active_click.reg
     - name: enable_clipboard_history_for_all_users.reg
     - name: enable_clipboard_sync_across_devices_for_all_users.reg
@@ -191,8 +192,15 @@ ahk_tts:
   download_file:
     - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/main.exe
       dest: "{{root}}/bin/TTS/main.exe"
-  win_startup:
-    - src: "{{root}}/bin/TTS/main.exe"
+  win_scheduled_task:
+    - name: TTS
+      run_level: highest
+      actions:
+        - path: "{{root}}/bin/TTS/main.exe"
+      triggers:
+        - type: logon  # win_startup:
+# win_startup:
+    # - src: "{{root}}/bin/TTS/main.exe"
 ahk_remapper_url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/BaseRemap.exe
 ahk_remapper:
   install: yes
@@ -209,34 +217,7 @@ ahk_remapper:
         - path: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
       triggers:
         - type: logon
-# - path: "$ENV:USERPROFILE/.vscode"
-# target: "D:/etc/.vscode"
-# processes:
-# - code
-# - path: "$ENV:USERPROFILE/.gitconfig"
-# target: "D:/etc/.gitconfig"
-# processes:
-# - git
-# file: yes
-# - path: >-
-# $ENV:USERPROFILE/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json
-# target: "D:/etc/windows-terminal/settings.json"
-# processes:
-# - WindowsTerminal
-# file: yes
-#etc folders
-# - path: "$ENV:USERPROFILE/AppData/Local/Microsoft/Edge/User Data"
-# target: "D:/etc/microsoft/edge/User Data"
-# processes:
-# - msedge
-# This creates a bug when restoring checkpoints in hyper v
-# - path: "C:/Users/Public/Documents/Hyper-V/Virtual Hard Disks"
-#   target: "D:/VirtualMachines/Hyper-V/Virtual Hard Disks"
-# - path: "C:/ProgramData/Microsoft/Windows/Hyper-V"
-#   target: "D:/VirtualMachines/Hyper-V"
-
 # https://windowsloop.com/enable-developer-mode-windows-10/
-# https://github.com/evilC/AutoHotInterception
 # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | %{ Remove-PartitionAccessPath -DiskNumber $_.DiskNumber -PartitionNumber $_.PartitionNumber -AccessPath "$($_.DriveLetter):"}
 # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | Add-PartitionAccessPath -AccessPath C:\FileHistory\
 # netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes
@@ -245,8 +226,6 @@ ahk_remapper:
 #   # set region of windows
 #   - script: PowerShell Get-WinHomeLocation; PowerShell Set-WinHomeLocation -GeoID 117
 # https://engineering.thetrainline.com/scripting-language-and-region-settings-for-current-user-default-user-and-welcome-screen-859bbd58900d
-# set login keyboard
-# https://social.technet.microsoft.com/Forums/windows/en-US/6a21b20a-4d04-460a-b672-968de78c6646/command-line-tools-to-completely-change-regioninput-language-for-default-user-and-welcome-screen?forum=winservergen
 
 # set login image
 # https://c-nergy.be/blog/?p=15168
