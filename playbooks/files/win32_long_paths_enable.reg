@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+; MajorGeeks.Com
+; How to Enable or Disable Win32 Long Paths in Windows 10
+; https://www.majorgeeks.com/content/page/enable_disable_win32_long_paths.html
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"LongPathsEnabled"=dword:00000001
+
