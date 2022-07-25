@@ -86,7 +86,7 @@ misc:
     - name: autohotkey
     - name: Everything
     - name: vlc
-    - name: Recuva
+#     - name: Recuva
     - name: mousewithoutborders
     - name: wizTree
     - name: discord
