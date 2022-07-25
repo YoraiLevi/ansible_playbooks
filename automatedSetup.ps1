@@ -382,7 +382,8 @@ Throw-NotAdministrator
 $scriptPath = $MyInvocation.MyCommand.Path
 $TEMP = Join-Path $env:TEMP $(New-Guid) | % { mkdir $_ } #$env:TEMP
 $autoLoginBackupFilePath = $(Join-Path $localdir 'backup.autologon')
-$repoUrl = "https://github.com/YoraiLevi/MyFuckingWikiOfEverything/archive/refs/heads/$branch.zip"
+$repoUrl = "https://github.com/YoraiLevi/ansible_playbooks
+/archive/refs/heads/$branch.zip"
 
 $winLogonKey = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
 $winLogon = (Get-ItemProperty -Path $winLogonKey -ErrorAction SilentlyContinue)
