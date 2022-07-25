@@ -3,11 +3,11 @@
 ## Setup windows with Ansible automatically
 
 ```
-$playbook = 'theEVERYTHING.yml'; $code = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/MyFuckingWikiOfEverything/master/Ansible/automatedSetup.ps1'); Invoke-Command  $([Scriptblock]::Create(($code) -join "`r`n")) -ArgumentList $playbook
+$playbook = 'theEVERYTHING.yml'; $code = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/ansible_playbooks/master/automatedSetup.ps1'); Invoke-Command  $([Scriptblock]::Create(($code) -join "`r`n")) -ArgumentList $playbook
 ```
 
 ```
-$playbook = 'ping.yml'; $code = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/MyFuckingWikiOfEverything/master/Ansible/automatedSetup.ps1'); Invoke-Command  $([Scriptblock]::Create(($code) -join "`r`n")) -ArgumentList $playbook
+$playbook = 'ping.yml'; $code = (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/YoraiLevi/ansible_playbooks/master/automatedSetup.ps1'); Invoke-Command  $([Scriptblock]::Create(($code) -join "`r`n")) -ArgumentList $playbook
 ```
 
 TODOS:
