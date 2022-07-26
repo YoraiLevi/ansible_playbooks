@@ -91,7 +91,7 @@ misc:
     - name: wizTree
     - name: discord
     - name: zoom
-    - name: jdownloader
+#     - name: jdownloader
     - name: qbittorrent
     - name: bitwarden
     - name: googledrive
