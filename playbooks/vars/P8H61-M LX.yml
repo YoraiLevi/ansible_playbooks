@@ -1,5 +1,7 @@
 ---
-root: "D:" #cmd path
+user_home: "D:" #cmd path
+mass_storage_path: "D:\\" #cmd path"
+fast_storage_path: "E:\\" #cmd path"
 enable_ps2_keyboard:
   install: yes
   reg_edits:
@@ -8,29 +10,29 @@ _move_folders:
   install: yes
   win_knownfolders:
     - knownFolder: "Desktop"
-      path: "{{root}}/Desktop"
+      path: "{{user_home}}/Desktop"
     - knownFolder: "Documents"
-      path: "{{root}}/Documents"
+      path: "{{user_home}}/Documents"
     - knownFolder: "Downloads"
-      path: "{{root}}/Downloads"
+      path: "{{user_home}}/Downloads"
     - knownFolder: "Videos"
-      path: "{{root}}/Videos"
+      path: "{{user_home}}/Videos"
     - knownFolder: "Music"
-      path: "{{root}}/Music"
+      path: "{{user_home}}/Music"
     - knownFolder: "Pictures"
-      path: "{{root}}/Pictures"
+      path: "{{user_home}}/Pictures"
   win_symlink:
-    - target: "{{root}}/Desktop"
+    - target: "{{user_home}}/Desktop"
       path: "%userprofile%/Desktop"
-    - target: "{{root}}/Documents"
+    - target: "{{user_home}}/Documents"
       path: "%userprofile%/Documents"
-    - target: "{{root}}/Downloads"
+    - target: "{{user_home}}/Downloads"
       path: "%userprofile%/Downloads"
-    - target: "{{root}}/Videos"
+    - target: "{{user_home}}/Videos"
       path: "%userprofile%/Videos"
-    - target: "{{root}}/Music"
+    - target: "{{user_home}}/Music"
       path: "%userprofile%/Music"
-    - target: "{{root}}/Pictures"
+    - target: "{{user_home}}/Pictures"
       path: "%userprofile%/Pictures"
 game_dev:
   install: yes
@@ -73,7 +75,7 @@ vagrant_default_provider:
 #       actions:
 #         - path: powershell.exe
 #           arguments: |
-#             -NoProfile -Command "$output = echo url='{{dUcK}}' | curl.exe -k -K -; echo \"{{_powershell_date}}: $output\" >> {{root}}/var/duck.log;exit $LASTEXITCODE"
+#             -NoProfile -Command "$output = echo url='{{dUcK}}' | curl.exe -k -K -; echo \"{{_powershell_date}}: $output\" >> {{user_home}}/var/duck.log;exit $LASTEXITCODE"
 #       triggers:
 #         - type: daily
 #           start_boundary: "2020-01-01T00:00:00"

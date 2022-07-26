@@ -1,53 +1,41 @@
 ---
-root: "%userprofile%" #cmd path
+user_home: "%userprofile%" #cmd path
+mass_storage_path: "C:\\" #cmd path"
+fast_storage_path: "C:\\" #cmd path"
 root_dir_structure:
   install: yes
   win_path:
     - elements:
-        - "{{root}}\\bin"
+        - "{{user_home}}\\bin"
       scope: user
   win_desktopini:
-    - path: "{{root}}\\Documents\\source"
+    - path: "{{user_home}}\\Documents\\source"
       IconResource: C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico,0
-    - path: "{{root}}\\VirtualMachines"
+    - path: "{{user_home}}\\VirtualMachines"
       IconResource: 'C:\Windows\System32\setupapi.dll,47'
-    - path: "{{root}}\\bin"
+    - path: "{{user_home}}\\bin"
       IconResource: 'C:\WINDOWS\System32\SHELL32.dll,314'
-    # - path: "D:/etc/microsoft/edge"
-    # IconResource: 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe,0'
-    - path: "{{root}}\\Games"
+    - path: "{{mass_storage_path}}\\Games"
       IconResource: 'C:\Windows\system32\setupapi.dll,36'
-    - path: "{{root}}\\Entertainment"
+    - path: "{{mass_storage_path}}\\Entertainment"
       IconResource: 'C:\Windows\system32\wmploc.dll,91'
   win_file:
-    - path: "{{root}}\\Documents\\source\\thirdparty"
+    - path: "{{user_home}}\\Documents\\source\\thirdparty"
       state: directory
-    - path: "{{root}}\\Documents\\source\\inDev"
+    - path: "{{user_home}}\\Documents\\source\\inDev"
       state: directory
-    - path: "{{root}}\\Documents\\source\\trashDev"
+    - path: "{{user_home}}\\Documents\\source\\trashDev"
       state: directory
-    - path: "{{root}}\\VirtualMachines\\Virtual Hard Disks"
+    - path: "{{fast_storage_path}}\\VirtualMachines\\Virtual Hard Disks"
       state: directory
     # linux dirs
-    # - path: "{{root}}\\bin"
-    # state: directory
-    - path: "{{root}}\\etc" #
+    - path: "{{user_home}}\\etc" #
       state: directory
-    - path: "{{root}}\\opt" #Aka program files
+    - path: "{{user_home}}\\opt" #Aka program files
       state: directory
-    # - dest: run
-    # state: directory
-    # - dest: sbin
-    # state: directory
-    # - dest: snap
-    # state: directory
-    # - dest: srv
-    # state: directory
-    # - dest: sys
-    # state: directory
-    - path: "{{root}}\\var"
+    - path: "{{user_home}}\\var"
       state: directory
-    - path: "{{root}}\\var\\log"
+    - path: "{{user_home}}\\var\\log"
       state: directory
 wsl_packages:
   install: yes
@@ -59,20 +47,17 @@ vagrant_home:
   install: yes
   win_environment:
     - name: VAGRANT_HOME
-      value: "{{root}}\\VirtualMachines\\.vagrant.d"
+      value: "{{fast_storage_path}}\\VirtualMachines\\.vagrant.d"
       level: user
 vagrant_default_provider:
 general_dev_tools:
   install: yes
   choco_packages:
-    # - name: wsl2
-    # fix ssh issues?
     - name: gsudo
-    # - name: docker-desktop
-    # - name: vagrant
+    - name: docker-desktop
+    - name: vagrant
     - name: vscode
-    # - name: git
-      # package_params: "/NoAutoCrlf /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /Editor:"
+    - name: git
     - name: poshgit
     - name: powershell-core
   include_task:
@@ -86,12 +71,12 @@ misc:
     - name: autohotkey
     - name: Everything
     - name: vlc
-#     - name: Recuva
+#     - name: Recuva # issue with checksum 26/07/2022
     - name: mousewithoutborders
     - name: wizTree
     - name: discord
     - name: zoom
-#     - name: jdownloader
+#     - name: jdownloader # issue with url 26/07/2022
     - name: qbittorrent
     - name: bitwarden
     - name: googledrive
@@ -142,6 +127,7 @@ store:
   windows_store:
     - uri: "https://www.microsoft.com/en-us/p/dynamic-theme/9nblggh1zbkw"
 debloat:
+# Clear everything from start?
   install: yes
   uninstall_appx:
     - name: "Disney.37853FC22B2CE"
@@ -153,6 +139,31 @@ debloat:
     - name: "microsoft.windowscommunicationsapps"
     - name: "Microsoft.ZuneMusic"
     - name: "Microsoft.ZuneVideo"
+    - name: "EclipseManager"
+    - name: "ActiproSoftwareLLC"
+    - name: "AdobeSystemsIncorporated.AdobePhotoshopExpress"
+    - name: "Duolingo-LearnLanguagesforFree"
+    - name: "PandoraMediaInc"
+    - name: "CandyCrush"
+    - name: "BubbleWitch3Saga"
+    - name: "Wunderlist"
+    - name: "Flipboard"
+    - name: "Twitter"
+    - name: "Facebook"
+    - name: "Royal Revolt"
+    - name: "Sway"
+    - name: "Speed Test"
+    - name: "Dolby"
+    - name: "Viber"
+    - name: "ACGMediaPlayer"
+    - name: "Netflix"
+    - name: "OneCalendar"
+    - name: "LinkedInforWindows"
+    - name: "HiddenCityMysteryofShadows"
+    - name: "Hulu"
+    - name: "HiddenCity"
+    - name: "AdobePhotoshopExpress"
+    - name: "HotspotShieldFreeVPN"
   reg_edits:
     - name: disable_chat_icon_on_taskbar_for_all_users.reg
     - name: remove_widgets_button_on_taskbar_in_windows_11.reg
@@ -177,7 +188,6 @@ personalize:
     - name: restore_the_classic_context_menus_in_windows_11.reg
     - name: show_open_windows_only.reg
     - name: start_layout_show_more_recommendations.reg
-    # - name: remove_shortcut_text.reg
 set_hibernate:
   install: yes
   win_hibernate:
@@ -187,36 +197,37 @@ ahk_tts:
   reg_edits:
     - name: eva.reg
   win_file:
-    - path: "{{root}}/bin/TTS"
+    - path: "{{user_home}}/bin/TTS"
       state: directory
   download_file:
-    - url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/main.exe
-      dest: "{{root}}/bin/TTS/main.exe"
+    - url: https://github.com/YoraiLevi/autohotkeys/releases/latest/download/main.exe
+      dest: "{{user_home}}/bin/TTS/TTS.exe"
   win_scheduled_task:
     - name: TTS
       run_level: highest
       actions:
-        - path: "{{root}}/bin/TTS/main.exe"
+        - path: "{{user_home}}/bin/TTS/TTS.exe"
       triggers:
-        - type: logon  # win_startup:
-# win_startup:
-    # - src: "{{root}}/bin/TTS/main.exe"
-ahk_remapper_url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/BaseRemap.exe
+        - type: logon
+ahk_remapper_url: https://github.com/YoraiLevi/autohotkeys/releases/latest/download/BaseRemap.exe
 ahk_remapper:
   install: yes
   win_file:
-    - path: "{{root}}/bin/KeyboardRemap"
+    - path: "{{user_home}}/bin/KeyboardRemap"
       state: directory
   download_file:
     - url: "{{ahk_remapper_url}}"
-      dest: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
+      dest: "{{user_home}}/bin/KeyboardRemap/KeyRemap.exe"
   win_scheduled_task:
     - name: Remap Keys
       run_level: highest
       actions:
-        - path: "{{root}}/bin/KeyboardRemap/BaseRemap.exe"
+        - path: "{{user_home}}/bin/KeyboardRemap/KeyRemap.exe"
       triggers:
         - type: logon
+#Install Interception driver
+
+
 # https://windowsloop.com/enable-developer-mode-windows-10/
 # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | %{ Remove-PartitionAccessPath -DiskNumber $_.DiskNumber -PartitionNumber $_.PartitionNumber -AccessPath "$($_.DriveLetter):"}
 # Get-Partition -DiskPath "\\?\usbstor#disk&ven__usb&prod__sandisk_3.2gen1&rev_1.00#010159aa95e629484cb55cce6f49dc91600e3979810843cf60342c1ab877b14#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}" | Add-PartitionAccessPath -AccessPath C:\FileHistory\
@@ -236,29 +247,4 @@ ahk_remapper:
 
 #     #Sponsored Windows 10 AppX Apps
 #     #Add sponsored/featured apps to remove in the "*AppName*" format
-#     "*EclipseManager*"
-#     "*ActiproSoftwareLLC*"
-#     "*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
-#     "*Duolingo-LearnLanguagesforFree*"
-#     "*PandoraMediaInc*"
-#     "*CandyCrush*"
-#     "*BubbleWitch3Saga*"
-#     "*Wunderlist*"
-#     "*Flipboard*"
-#     "*Twitter*"
-#     "*Facebook*"
-#     "*Royal Revolt*"
-#     "*Sway*"
-#     "*Speed Test*"
-#     "*Dolby*"
-#     "*Viber*"
-#     "*ACGMediaPlayer*"
-#     "*Netflix*"
-#     "*OneCalendar*"
-#     "*LinkedInforWindows*"
-#     "*HiddenCityMysteryofShadows*"
-#     "*Hulu*"
-#     "*HiddenCity*"
-#     "*AdobePhotoshopExpress*"
-#     "*HotspotShieldFreeVPN*"
 

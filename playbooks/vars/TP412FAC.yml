@@ -1,14 +1,14 @@
 ---
-ahk_remapper_url: https://github.com/YoraiLevi/MyFuckingWikiOfEverything/releases/latest/download/Vivobook_ASUSLaptop.TP412FAC_TP412FA.exe
+ahk_remapper_url: https://github.com/YoraiLevi/autohotkeys/releases/latest/download/Vivobook_ASUSLaptop.TP412FAC_TP412FA.exe
 apply_reg_laptop:
   install: yes
   reg_edits:
     - name: 115scalefactor.reg
     - name: turn_on_screen_rotation_lock.reg
-virtualbox:
-  install: yes
-  choco_packages:
-    - name: virtualbox
+# virtualbox:
+#   install: yes
+#   choco_packages:
+#     - name: virtualbox
 misc_laptop:
   # install: yes
   choco_packages:
