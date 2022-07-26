@@ -34,4 +34,4 @@
   # changed_when: '"changed" in git.output'
   # register: git
   vars:
-    target: '[System.Environment]::ExpandEnvironmentVariables("{{root}}")'
+    target: '[System.Environment]::ExpandEnvironmentVariables("{{user_home}}")'
