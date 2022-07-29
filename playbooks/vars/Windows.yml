@@ -192,6 +192,10 @@ set_hibernate:
   install: yes
   win_hibernate:
     - size: 100
+start_menu_customization:
+  download_file:
+    - url: https://raw.githubusercontent.com/YoraiLevi/ansible_playbooks/master/playbooks/files/start.bin
+      dest: '%LocalAppData%/Packages/Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy/LocalState/start.bin'
 ahk_tts:
   install: yes
   reg_edits:
@@ -225,6 +229,8 @@ ahk_remapper:
         - path: "{{user_home}}/bin/KeyboardRemap/KeyRemap.exe"
       triggers:
         - type: logon
+
+
 #Install Interception driver
 
 
