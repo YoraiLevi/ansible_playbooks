@@ -188,6 +188,7 @@ personalize:
     - name: restore_the_classic_context_menus_in_windows_11.reg
     - name: show_open_windows_only.reg
     - name: start_layout_show_more_recommendations.reg
+    - name: win32_long_paths_enable.reg
 set_hibernate:
   install: yes
   win_hibernate:
