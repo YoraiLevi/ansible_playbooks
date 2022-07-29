@@ -11,7 +11,7 @@ $playbook = 'ping.yml'; $code = (New-Object System.Net.WebClient).DownloadString
 ```
 
 TODOS:
-
+* pin to quick access https://stackoverflow.com/questions/30051634/is-it-possible-programmatically-add-folders-to-the-windows-10-quick-access-panel
 * include_vars that allows "patching"/overwriting existing keys, recusive patching
 * inheritable include_vars - "works kinda" - write action that includes vars and merges
 * easily remove "omitted" keys from dict
