@@ -58,6 +58,7 @@ general_dev_tools:
     - name: vagrant
     - name: vscode
     - name: git
+      package_params: '/GitOnlyOnPath /NoAutoCrlf /WindowsTerminal /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /Symlinks /Editor:VisualStudioCode'
     - name: poshgit
     - name: powershell-core
   include_task:
