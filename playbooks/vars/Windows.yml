@@ -11,7 +11,7 @@ root_dir_structure:
   win_desktopini:
     - path: "{{user_home}}\\Documents\\source"
       IconResource: C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico,0
-    - path: "{{user_home}}\\VirtualMachines"
+    - path: "{{fast_storage_path}}\\VirtualMachines"
       IconResource: 'C:\Windows\System32\setupapi.dll,47'
     - path: "{{user_home}}\\bin"
       IconResource: 'C:\WINDOWS\System32\SHELL32.dll,314'
