@@ -456,6 +456,7 @@ try {
     }
 
     # Initialized windows
+    echo "Windows is Initialized... Starting task"
     if ( Installed-WSL2 -and Installed-Distro) {
         $ansibleDir = (get-item $scriptPath).Directory
         $prevPWD = $PWD

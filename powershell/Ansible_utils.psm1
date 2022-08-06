@@ -2,7 +2,7 @@ Import-Module -DisableNameChecking $PSScriptRoot\WSL_utils.psm1
 Import-Module -DisableNameChecking $PSScriptRoot\Powershell_utils.psm1
 function Setup-Ansible {
     wsl 'ip link set dev eth0 mtu 1350'
-    wsl '--user root apt update && apt install ansible python3-pip ohai -y' #setup module can use ohai.
+    wsl '--user root apt-get update && apt-get install ansible python3-pip ohai -y' #setup module can use ohai.
     wsl 'ansible-galaxy collection install ansible.windows'
     wsl 'ansible-galaxy collection install community.windows'
     wsl 'ansible-galaxy collection install chocolatey.chocolatey'
