@@ -11,17 +11,24 @@ $playbook = 'ping.yml'; $code = (New-Object System.Net.WebClient).DownloadString
 ```
 
 TODOS:
+
+TASKS:
 * pin to quick access https://stackoverflow.com/questions/30051634/is-it-possible-programmatically-add-folders-to-the-windows-10-quick-access-panel
+  * which folders? google drive?
+* Install Interception Driver on laptop (for ahk) https://github.com/evilC/AutoHotInterception#setup
+* install hyperv on windows home version
+* setup hyperv default locations: https://www.tenforums.com/tutorials/56837-change-hyper-v-virtual-machines-default-folder-windows-10-a.html
+* set login keyboard <https://social.technet.microsoft.com/Forums/windows/en-US/6a21b20a-4d04-460a-b672-968de78c6646/command-line-tools-to-completely-change-regioninput-language-for-default-user-and-welcome-screen?forum=winservergen>
+FRAME WORK:
 * include_vars that allows "patching"/overwriting existing keys, recusive patching
 * inheritable include_vars - "works kinda" - write action that includes vars and merges
 * easily remove "omitted" keys from dict
 * read any file format (utf16 issue) - _needle function
 * find files module - _needle function
+COLLECTION:
 * create modules intead of roles for windows
 * auto scan for custom facts module. linux + windows with no error
 * win_reg_file cannot process hex: type correctly (binary) aka no capslock .reg
 * Issue with installing python (when not installed) via choco
 * download_file needs the directory to be already made
 * Task scheduler task in background https://superuser.com/a/1332982/1220772
-* Install Interception Driver on laptop (for ahk) https://github.com/evilC/AutoHotInterception#setup
-* set login keyboard <https://social.technet.microsoft.com/Forums/windows/en-US/6a21b20a-4d04-460a-b672-968de78c6646/command-line-tools-to-completely-change-regioninput-language-for-default-user-and-welcome-screen?forum=winservergen>

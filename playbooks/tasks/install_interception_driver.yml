@@ -1,0 +1,16 @@
+- name: install interception
+  win_tempfile:
+    state: directory
+    suffix: build
+  register: tmp
+  changed_when: false
+- name: Downloading interception driver
+  win_get_url:
+    url: https://github.com/oblitum/Interception/releases/latest/download/Interception.zip
+    dest: "{{tmp.path}}/Interception.zip"
+  changed_when: false
+- community.windows.win_unzip:
+    src: "{{tmp.path}}/Interception.zip"
+    dest: "{{tmp.path}}/"
+- ansible.windows.win_powershell:
+    script: "&\"{{tmp.path}}/Interception/command line installer/install-interception.exe\" /install"

@@ -5,6 +5,11 @@ apply_reg_laptop:
   reg_edits:
     - name: 115scalefactor.reg
     - name: turn_on_screen_rotation_lock.reg
+hyperv:
+  install: yes
+  include_task:
+    - file: hyperv_windows_home.yml
+    - file: install_interception_driver.yml
 # virtualbox:
 #   install: yes
 #   choco_packages:
