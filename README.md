@@ -25,3 +25,4 @@ TODOS:
 * Task scheduler task in background https://superuser.com/a/1332982/1220772
 * Install Interception Driver on laptop (for ahk) https://github.com/evilC/AutoHotInterception#setup
 * set login keyboard <https://social.technet.microsoft.com/Forums/windows/en-US/6a21b20a-4d04-460a-b672-968de78c6646/command-line-tools-to-completely-change-regioninput-language-for-default-user-and-welcome-screen?forum=winservergen>
+* an alternative to settings the "known folders" is via registries: https://www.ubackup.com/articles/cant-move-the-folder-because-there-is-a-folder-onedrive.html#:~:text=Why%20Can't%20Move%20Documents,t%20return%20to%20normal%20values.
